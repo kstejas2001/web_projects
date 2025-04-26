@@ -1,0 +1,97 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background-image: url('../images/background-image_2.jpg');
+    background-size: cover;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    animation: fadeInBody 1.2s ease-in;
+}
+@keyframes fadeInBody {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+.container {
+    max-width: 700px;
+    background: rgba(0, 0, 0, 0.6);
+    margin: 60px auto;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px #222;
+    animation: slideIn 1s ease-out;
+}
+@keyframes slideIn{
+    from { transform: translateY(-40px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+.full-width-container {
+    width: 90%;
+    margin: 40px auto;
+    padding: 30px;
+    background: rgba(0, 0, 0, 0.6);
+    box-shadow: none;
+}
+h1 {
+    font-size: 36px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #fff;
+}
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #00ffd0;
+}
+form input, form select, form textarea, form button{
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    border-radius: 8px;
+    border: none;
+    font-size: 16px;
+}
+form button {
+    background-color: #00ffd0;
+    color: #000;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+}
+form button:hover {
+    background-color: #00c3a0;
+}
+table{
+    width: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    border-collapse: collapse;
+    box-shadow: 0 0 20px #222;
+    margin-top: 20px;
+    color: #fff;
+}
+th, td{
+    padding: 10px;
+    border: 1px solid #888;
+    text-align: center;
+}
+th {
+    background-color: #00ffd0;
+    color: #000;
+}
+a{
+    color: #00ffd0;
+    text-decoration: none;
+    text-align: center;
+}
+a:hover {
+    text-decoration: underline;
+    color: #00c3a0;
+    transition: 0.3s ease-in;
+}
+
+img{
+    animation: fadeInImage 1.5s ease-in-out;
+}
+@keyframes fadeInImage {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}

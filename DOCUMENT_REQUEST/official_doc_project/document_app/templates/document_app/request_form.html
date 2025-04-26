@@ -1,0 +1,35 @@
+{% extends "document_app/base.html" %}
+
+{% block content %}
+<div class="container">
+<h1>Apply for Official Document</h1>
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <label for="full_name">Full Name:</label><br>
+    <input type="text" name="full_name" required><br><br>
+
+    <label>Document Type:</label><br>
+    <select name="document_type" required>
+        <option value=" ">--Select Document--</option>
+        <option value="Aadhaar">Aadhaar Card</option>
+        <option value="PAN">PAN Card</option>
+        <option value="VoterID">Voter ID</option>
+        <option value="RationCard">Ration Card</option>
+        <option value="Birth_Certificate">Birth Certificate</option>
+        <option value="Marriage_Certificate">Marriage Certificate</option>
+        <option value="Passport">Passport</option>
+        <option value="Death_Certificate">Death Certificate</option>
+    </select><br><br>
+
+    <label>ID Proof (PDF or Image):</label><br>
+    <input type="file" name="id_proof" accept=".pdf, .jpg, .jpeg, .png" required><br><br>
+
+    <label>Address Proof (PDF or Image):</label><br>
+    <input type="file" name="address_proof" accept=".pdf, .jpg, .jpeg, .png" required><br><br>
+
+    <button type="submit">Submit Request</button>
+</form>
+</div>
+{% endblock %}

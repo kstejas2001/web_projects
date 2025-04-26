@@ -1,0 +1,38 @@
+{% extends 'document_app/base.html' %}
+{% block content %}
+{% load static %}
+<div class="full-width-container">
+    <img src="{% static 'images/admin_dashboard.jpg' %}" alt="Admin Work" style="width: 100%; border-radius: 10px;">
+
+    <h2>Admin Control Center</h2>
+    <p>Manage, verify, and process citizen document request efficiently and securly.</p>
+
+    {% if all_requests %}
+        <table border="1" cellpadding="8">
+            <tr>
+                <th>User</th>
+                <th>Full Name</th>
+                <th>Document Type</th>
+                <th>Status</th>
+                <th>Submitted At</th>
+                <th>Action</th>
+            </tr>
+            {% for req in all_requests %}
+            <tr>
+                <td>{{ req.user.username }}</td>
+                <td>{{ req.full_name }}</td>
+                <td>{{ req.document_type }}</td>
+                <td>{{ req.status }}</td>
+                <td>{{ req.submitted_at }}</td>
+                <td>
+                    <a href="{% url 'update_request' req.id %}">Update</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No document requests found.</p>
+    {% endif %}
+</div>
+
+{% endblock %}

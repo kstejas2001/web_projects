@@ -1,0 +1,37 @@
+{% extends "document_app/base.html" %}
+{% block content %}
+<div class="container">
+<h2>Your Document Requests</h2>
+<p>Stay updated with the latest status of your official document applications. Download your approved documents instantly.</p>
+{% if requests %}
+<table border="1" cellpadding="8">
+    <tr>
+        <th>Full Name</th>
+        <th>Document Type</th>
+        <th>Status</th>
+        <th>Submitted At</th>
+        <th>Final Document</th>
+    </tr>
+    {% for req in requests %}
+    <tr>
+        <td>{{ req.full_name }}</td>
+        <td>{{ req.document_type }}</td>
+        <td>{{ req.status }}</td>
+        <td>{{ req.submitted_at }}</td>
+        <td>
+            {% if req.final_document %}
+                <a href="{{ req.final_document.url }}" download>Download</a>
+            {% else %}
+                Not Available
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+<p>Total Requests: {{ requests.count }}</p>
+<p>Note: You can track the status of your requests here.</p>
+</div>
+{% else %}
+    <p>You have not submitted any requests yet. Start by applying for your document today!</p>
+{% endif %}
+{% endblock %}
