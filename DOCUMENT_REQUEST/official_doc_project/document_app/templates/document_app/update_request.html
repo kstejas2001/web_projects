@@ -1,24 +1,28 @@
 {% extends "document_app/base.html" %}
+{% load static %}
+
 {% block content %}
-<div class="container">
-<h2>Update Request:{{ doc_request.full_name }} - {{ doc_request.document_type }}</h2>
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <label>Status:</label><br>
-    <select name="status" required>
-        <option value="Pending" {% if doc_request.status == "Pending" %}selected{% endif %}>Pending</option>
-        <option value="Approved" {% if doc_request.status == "Approved" %}selected{% endif %}>Approved</option>
-        <option value="Rejected" {% if doc_request.status == "Rejected" %}selected{% endif %}>Rejected</option>
-    </select><br><br>
+<div class="update-card">
+    <h2>Update Request:{{ doc_request.full_name }} - {{ doc_request.document_type }}</h2>
 
-    <label>Remarks:</label><br>
-    <textarea name="remarks" rows="4" cols="50">{{ doc_request.admin_remarks }}</textarea><br><br>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
 
-    <label>Upload Final Document (PDF/Image):</label><br>
-    <input type="file" name="final_document"><br><br>
+        <label>Status:</label>
+        <select name="status" required>
+            <option value="Pending" {% if doc_request.status == "Pending" %}selected{% endif %}>Pending</option>
+            <option value="Approved" {% if doc_request.status == "Approved" %}selected{% endif %}>Approved</option>
+            <option value="Rejected" {% if doc_request.status == "Rejected" %}selected{% endif %}>Rejected</option>
+        </select>
 
-    <button type="submit">Save</button>
-</form>
+        <label>Remarks:</label><br>
+        <textarea name="remarks" rows="3" placeholder="Optional...">{{ document.remarks }}</textarea>
+
+        <label>Upload Final Document (PDF/Image):</label>
+        <input type="file" name="final_document">
+
+        <button type="submit">Save</button>
+    </form>
 </div>
 {% endblock %}
 

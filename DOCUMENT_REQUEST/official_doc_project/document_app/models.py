@@ -16,6 +16,11 @@ class DocumentRequest(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     full_name = models.CharField(max_length=100)
+    dob = models.DateField(null=True, blank=True)
+    address = models.TextField(null=True, blank=True)
+    gender = models.CharField(max_length=10, null=True, blank=True)
+    father_name = models.CharField(max_length=100, null=True, blank=True)
+    pan_number = models.CharField(max_length=10, null=True, blank=True)
     document_type = models.CharField(max_length=20, choices=DOCUMENT_CHOICES)
     id_proof = models.FileField(upload_to='id_proofs/')
     address_proof = models.FileField(upload_to='address_proofs/')

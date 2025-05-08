@@ -1,36 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-<body>
-    <div class="container">
-        <img src="{% static 'images/registration.jpg' %}" alt="Register" style="width: 100%; border-radius: 10px;">
-    <h2>Create Your Account</h2>
-    <p>Register now to request and track your official government document easily and securely.</p>
+{% extends 'document_app/base.html' %}
+{% load static %}
 
-    <ul>
-        <li>Track your request anytime</li>
-        <li>Recieve instant updates</li>
-        <li>Secure document uploads</li>
-    </ul>
-    <form method="post">
-        {% csrf_token %}
-        <label>Username:</label><br>
-        <input type="text" name="username"><br><br>
-
-        <label>Email:</label><br>
-        <input type="email" name="email"><br><br>
-
-        <label>Password:</label><br>
-        <input type="password" name="password"><br><br>
-
-        <button type="submit">Register</button>
-    </form>
+{% block content %}
+    <div class="register-card">
+        <h2>Create Your Account</h2>
+        {% if messages %}
+            {% for message in messages %}
+                <div style="color: red;">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        <p>Register now to request and track your official government document easily and securely.</p>
+        <form method="post">
+            {% csrf_token %}
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="password" name="password1" placeholder="Password" required>
+            <input type="password" name="password2" placeholder="Confirm Password">
+            <button type="submit">Register</button>
+        </form>
+        <p>Already have an account? <a href="{% url 'login' %}">Login Now</a></p>
     </div>
-</body>
-</html>
+    <footer>
+        <p style="text-align: center; margin-top: 20px;">Your documents, your rights - handled with care.</p>
+    </footer>
+{% endblock %}

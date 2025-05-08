@@ -1,38 +1,69 @@
 {% extends 'document_app/base.html' %}
-{% block content %}
 {% load static %}
-<div class="full-width-container">
-    <img src="{% static 'images/admin_dashboard.jpg' %}" alt="Admin Work" style="width: 100%; border-radius: 10px;">
 
-    <h2>Admin Control Center</h2>
-    <p>Manage, verify, and process citizen document request efficiently and securly.</p>
+{% block content %}
+<div class="admin-panel">
+    <h1>Welcome, {{ user.username }}</h1>
+    <h2>Admin Dashboard</h2>
+    <p>As an admin, you can manage all document requests and ensure a smooth process for citizens.</p>
+    <p>Here you can view all document requests, update their status, and manage user accounts.</p>
 
-    {% if all_requests %}
-        <table border="1" cellpadding="8">
-            <tr>
-                <th>User</th>
-                <th>Full Name</th>
-                <th>Document Type</th>
-                <th>Status</th>
-                <th>Submitted At</th>
-                <th>Action</th>
-            </tr>
-            {% for req in all_requests %}
-            <tr>
-                <td>{{ req.user.username }}</td>
-                <td>{{ req.full_name }}</td>
-                <td>{{ req.document_type }}</td>
-                <td>{{ req.status }}</td>
-                <td>{{ req.submitted_at }}</td>
-                <td>
-                    <a href="{% url 'update_request' req.id %}">Update</a>
-                </td>
-            </tr>
+    <!--Top Stats-->
+    <div class="stats">
+        <div class="stat-card">
+            <h3>Total Requests</h3>
+            <p>{{ total_requests }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>Pending</h3>
+            <p>{{ pending_requests }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>Approved</h3>
+            <p>{{ approved_requests }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>Rejected</h3>
+            <p>{{ rejected_requests }}</p>
+        </div>
+    </div>
+    <!--Request Table-->
+    <div class="request-table">
+        {% if all_requests %}
+        <table>
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Full Name</th>
+                    <th>Document Type</th>
+                    <th>Status</th>
+                    <th>Submitted At</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for req in all_requests %}
+                <tr>
+                    <td>{{ req.user.username }}</td>
+                    <td>{{ req.full_name }}</td>
+                    <td>{{ req.document_type }}</td>
+                    <td>{% if req.status == "Pending" %}
+                        <span class="badge badge-pending">Pending</span>
+                        {% elif req.status == "Approved" %}
+                        <span class="badge badge-approved">Approved</span>
+                        {% else %}
+                        <span class="badge badge-rejected">Rejected</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ req.submitted_at }}</td>
+                    <td><a href="{% url 'update_request' req.id %}" class="update-btn">Update</a></td>
+                </tr>
             {% endfor %}
+            </tbody>
         </table>
-    {% else %}
+        {% else %}
         <p>No document requests found.</p>
-    {% endif %}
+        {% endif %}
+    </div>
 </div>
-
 {% endblock %}

@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from .models import UserProfile
 from django.contrib.auth.decorators import login_required
+import datetime
 
 def home(request):
     return render(request, 'document_app/home.html')
@@ -10,10 +11,15 @@ def register(request):
     if request.method == 'POST':
         username = request.POST['username']
         email = request.POST['email']
-        password = request.POST['password']
+        password1 = request.POST['password1']
+        password2 = request.POST['password2']
+
+        if password1 != password2:
+            messages.error(request, 'Passwords do not match')
+            return render('register')
 
         # Create user
-        user = User.objects.create_user(username=username, email=email, password=password)
+        user = User.objects.create_user(username=username, email=email, password=password1)
         user.save()
 
         UserProfile.objects.create(user=user, role='user')  # Create a UserProfile for the new user
@@ -50,7 +56,12 @@ def admin_panel(request):
     profile = UserProfile.objects.get(user=request.user)
     if profile.role == 'admin':
         all_requests = DocumentRequest.objects.all().order_by('-submitted_at')  # Get all document requests
-        return render(request, 'document_app/admin_dashboard.html', {'all_requests': all_requests})
+        total_requests = all_requests.count()
+        pending_requests = all_requests.filter(status='Pending').count()
+        approved_requests = all_requests.filter(status='Approved').count()
+        rejected_requests = all_requests.filter(status='Rejected').count()
+
+        return render(request, 'document_app/admin_dashboard.html', {'all_requests': all_requests, 'total_requests': total_requests, 'pending_requests': pending_requests, 'approved_requests': approved_requests, 'rejected_requests': rejected_requests})
     else:
         return redirect('home') # prevent non-admin users from accessing admin dashboard
 
@@ -65,22 +76,31 @@ from django.contrib.auth.decorators import login_required
 @login_required
 def request_document(request):
     if request.method == 'POST':
-        full_name = request.POST['full_name']
+        full_name=request.POST['full_name']
+        dob = request.POST.get('dob')
+        address = request.POST['address']
         document_type = request.POST['document_type']
         id_proof = request.FILES['id_proof']
         address_proof = request.FILES['address_proof']
 
         # Create DocumentRequest object
-        DocumentRequest.objects.create(
+        doc_request = DocumentRequest.objects.create(
             user=request.user,
             full_name=full_name,
+            dob=dob,
+            address=address,
             document_type=document_type,
             id_proof=id_proof,
             address_proof=address_proof,
         )
+        if document_type == "PAN Card":
+            doc_request.father_name = request.POST.get('father_name')
+            doc_request.save()  # Save the updated fields
         
         return redirect('home') # Redirect to home after request submission
     return render(request, 'document_app/request_form.html')
+
+from .utils.certificate_generation import generate_certificate
 
 @login_required
 def update_request(request, request_id):
@@ -93,15 +113,34 @@ def update_request(request, request_id):
     if request.method == 'POST':
         status = request.POST['status']
         remarks = request.POST.get('remarks', '')
-        final_doc = request.FILES.get('final_document')
 
         doc_request.status = status
         doc_request.admin_remarks = remarks
 
-        if final_doc:
-            doc_request.final_document = final_doc
-            
+        if status == 'Approved':
+            # Auto-generate the PDF here
+            if doc_request.document_type == "PAN Card" and not doc_request.pan_number:
+                import random
+                import string
+                prefix = ''.join(random.choices(string.ascii_uppercase, k=5))
+                digits = ''.join(random.choices(string.digits, k=4))
+                suffix = random.choice(string.ascii_uppercase)
+                doc_request.pan_number = f"{prefix}{digits}{suffix}"
+
+            # Prepare user data for certificate generation
+            user_data = {
+                'full_name': doc_request.full_name,
+                'dob': doc_request.dob.strftime('%d-%m-%Y') if doc_request.dob else 'N/A',
+                'gender': doc_request.gender if doc_request.gender else 'N/A',
+                'address': doc_request.address if doc_request.address else 'N/A',
+                'father_name': doc_request.father_name if doc_request.father_name else 'N/A',
+                'aadhaar_number': f"XXXX-XXXX-{str(doc_request.id).zfill(4)}",
+                'pan_number': doc_request.pan_number if doc_request.pan_number else 'N/A',
+                'user_id': str(doc_request.user.id),
+            }           
+            generate_certificate(user_data, doc_request.document_type, doc_request)
             doc_request.save()
+            
             return redirect('admin_panel')
         
     return render(request, 'document_app/update_request.html', {'doc_request': doc_request})

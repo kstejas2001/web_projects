@@ -1,37 +1,49 @@
-{% extends "document_app/base.html" %}
+{% extends 'document_app/base.html' %}
+{% load static %}
+
 {% block content %}
-<div class="container">
-<h2>Your Document Requests</h2>
-<p>Stay updated with the latest status of your official document applications. Download your approved documents instantly.</p>
-{% if requests %}
-<table border="1" cellpadding="8">
-    <tr>
-        <th>Full Name</th>
-        <th>Document Type</th>
-        <th>Status</th>
-        <th>Submitted At</th>
-        <th>Final Document</th>
-    </tr>
-    {% for req in requests %}
-    <tr>
-        <td>{{ req.full_name }}</td>
-        <td>{{ req.document_type }}</td>
-        <td>{{ req.status }}</td>
-        <td>{{ req.submitted_at }}</td>
-        <td>
-            {% if req.final_document %}
-                <a href="{{ req.final_document.url }}" download>Download</a>
-            {% else %}
-                Not Available
-            {% endif %}
-        </td>
-    </tr>
-    {% endfor %}
-</table>
-<p>Total Requests: {{ requests.count }}</p>
-<p>Note: You can track the status of your requests here.</p>
+<div class="status-card">
+    <h2>Your Document Request Status</h2>
+    <p>Stay updated with the latest status of your official document applications. Download your approved documents instantly.</p>
+
+    {% if requests %}
+    <table>
+        <thead>
+            <tr>
+                <th>Full Name</th>
+                <th>Document Type</th>
+                <th>Status</th>
+                <th>Submitted At</th>
+                <th>Final Document</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for req in requests %}
+            <tr>
+                <td>{{ req.full_name }}</td>
+                <td>{{ req.document_type }}</td>
+                <td>{% if req.status == "Pending" %}
+                    <span class="badge badge-pending">Pending</span>
+                    {% elif req.status == "Approved" %}
+                    <span class="badge badge-approved">Approved</span>
+                    {% else %}
+                    <span class="badge badge-rejected">Rejected</span>
+                    {% endif %}
+                </td>
+                <td>{{ req.submitted_at }}</td>
+                <td>
+                    {% if req.final_document %}
+                        <a href="{{ req.final_document.url }}" class="download-btn" download>Download</a>
+                    {% else %}
+                        Not Available
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>You have not submitted any document requests yet. Start by applying for your document today!</p>
+    {% endif %}
 </div>
-{% else %}
-    <p>You have not submitted any requests yet. Start by applying for your document today!</p>
-{% endif %}
 {% endblock %}

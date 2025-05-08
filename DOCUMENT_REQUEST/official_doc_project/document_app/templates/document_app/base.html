@@ -9,16 +9,40 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet"></head>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
 <body>
-    {% if user.is_authenticated %}
-    <p>Welcome, {{ user.username }} | <a href="{% url 'logout' %}">Logout</a></p>
-    {% else %}
-    <a href="{% url 'login' %}">Login</a> | <a href="{% url 'register' %}">Register</a>
-    {% endif %}
-
-    <hr>
-
+    <!--Navbar Start-->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="/">Official Docs Portal</a>
+            </div>
+            <ul class="nav-links">
+                {% if user.is_authenticated %}
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'request_document' %}">Apply</a></li>
+                <li><a href="{% url 'track_status' %}">Track Status</a></li>
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+                {% else %}
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'register' %}">Register</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+    <!--Navbar End-->
     {% block content %}{% endblock %}
-
+    <script>
+    window.addEventListener('scroll', function()
+    {
+        const navbar = document.querySelector('.navbar');
+        if (window.scrollY > 50) {
+            navbar.style.backgroundColor = 'transparent';
+        } else {
+            navbar.style.backgroundColor = '#111111';
+        }
+    });
+    </script>
 </body>
 </html>

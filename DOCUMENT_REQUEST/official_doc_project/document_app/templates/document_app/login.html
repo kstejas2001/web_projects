@@ -1,37 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-<body>
-    <div class="container">
-        <img src="{% static 'images/login.jpg' %}" alt="Login Security" style="width: 100%; border-radius: 10px;">
+{% extends 'document_app/base.html' %}
+{% load static %}
 
+{% block content %}
+<div class="login-card">
     <h2>Login to Your Account</h2>
-    <p>Welcome back! Access your request history, check document statuses, and download your approved documents securly.</p>
+    {% if messages %}
+        {% for message in messages %}
+        <div style="color: red;">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
     <form method="post">
         {% csrf_token %}
-        <label>Username:</label><br>
-        <input type="text" name="username"><br><br>
+        <input type="text" name="username" placeholder="Username" required>
 
-        <label>Password:</label><br>
-        <input type="password" name="password"><br><br>
+        <input type="password" name="password" placeholder="Password" required>
 
         <button type="submit">Login</button>
-        <p>Don't have an account? <a href="{% url 'register' %}">Register here</a></p>
-        {% if messages %}
-            {% for message in messages %}
-                <p style="color: red;">{{ message }}</p>
-            {% endfor %}
-        {% endif %}
-        <footer>
-            <p style="text-align: center; margin-top: 20px;">Your documents, your rights - handled with care.</p>
-        </footer>
     </form>
-    </div>
-</body>
-</html>
+    
+    <p style="margin-top: 20px;">Don't have an account? <a href="{% url 'register' %}">Register Now</a></p>
+</div>
+{% endblock %}

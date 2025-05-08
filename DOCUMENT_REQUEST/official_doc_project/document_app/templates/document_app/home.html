@@ -1,17 +1,18 @@
 {% extends "document_app/base.html" %}
 {% load static %}
+
 {% block content %}
-<div class="full-width-container">
-    <img src="{% static 'images/office.jpg' %}" alt="Office Background" style="width: 100%; border-radius: 10px;">
-    <h1>Welcome to Official Document Request Portal</h1>
-    {% if user.is_authenticated %}
-    <a href="{% url 'request_document' %}" style="display: inline-block; padding: 12px 24px; background: #007bff; color: white; border-radius: 6px; font-size: 18px; text-decoration: none; margin-top: 20px;">Apply Now</a>
-    {% else %}
-    <a href="{% url 'login' %}" style="display: inline-block; padding: 12px 24px; background: #007bff; color: white; border-radius: 6px; font-size: 18px; text-decoration: none; margin-top: 20px;">Apply Now</a>
-    {% endif %}
-    <p>Seamlessly request your official documents like Aadhaar, PAN, Birth Certificates, and more - from the comfort of your home.</p>
-    <p>Our platform is designed to simplify the process of obtaining essential documents, ensuring a hassle-free experience.</p>
-    <p>Your identity, Our priority</p>
-    <a href="{% url 'request_document' %}">Apply for Document</a> | <a href="{% url 'track_status' %}">Track Status</a>
+<div class="hero-section">
+    <div class="hero-content">
+        <h1>Welcome to the Official Document Request Portal</h1>
+        <p>Seamlessly request your official document like adharr, PAN, Birth Certificates, and more - from the comfort of your home.</p>
+        <p>Our platform is designed to simplyfy the process of obtained essential documents, ensuring a hassle-free experience.</p>
+
+        {% if user.is_authenticated %}
+        <a href="{% url 'request_document' %}" class="hero-btn">Apply Now</a>
+        {% else %}
+        <a href="{% url 'register' %}" class="hero-btn">Register Now</a>
+        {% endif %}
+    </div>
 </div>
 {% endblock %}
