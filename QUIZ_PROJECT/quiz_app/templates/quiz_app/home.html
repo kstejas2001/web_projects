@@ -1,10 +1,24 @@
 {% extends 'quiz_app/base.html' %}
-{% block title %}Home{% endblock %}
+{% block title %}Welcome{% endblock %}
 
 {% block content %}
-<div class="text-center">
-    <h1 class="display-5 fw-bold">Welcome to the Quiz Creator & Auto-Grading System</h1>
-    <p class="lead">Create, Take, and Evaluate quizzes with instant results and analytics.</p>
-    <a href="{% url 'register' %}" class="btn btn-primary btn-lg mt-3">Get Started</a>
-</div>
+<section class="py-5 text-center text-md-start">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-6 mb-4 mb-md-0">
+                <h1 class="display-4 fw-bold text-dark">
+                    Welcome to <span class="text-primary">QuizMaster</span>
+                </h1>
+                <p class="lead text-muted mt-3 mb-4">
+                    The ultimate platform for creating, taking, and evaluating quizzes — with instant results and beautiful analytics.
+                </p>
+                <a href="{% url 'register' %}" class="btn btn-primary btn-lg px-4">Get Started</a>
+                <a href="{% url 'login' %}" class="btn btn-outline-secondary btn-lg px-4 ms-2">Login</a>
+            </div>
+            <div class="col-md-6 text-center">
+                <img src="https://cdn-icons-png.flaticon.com/512/906/906175.png" class="img-fluid" style="max-height: 320px;" alt="Quiz Image">
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}

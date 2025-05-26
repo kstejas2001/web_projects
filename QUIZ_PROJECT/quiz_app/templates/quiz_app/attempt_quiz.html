@@ -1,9 +1,7 @@
-{% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-    <title>{{ quiz.title }}</title>
-    <link rel="stylesheet" href="{% static 'quiz_app/css/main.css' %}">
+{% extends 'quiz_app/base.html' %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
     <script>
         let timeLeft = parseInt("{{ quiz.duration|default:0 }}", 10) * 60;
 
@@ -47,5 +45,4 @@
         {% endfor %}
         <button type="submit">Submit Quiz</button>
     </form>
-</body>
-</html>
+{% endblock %}

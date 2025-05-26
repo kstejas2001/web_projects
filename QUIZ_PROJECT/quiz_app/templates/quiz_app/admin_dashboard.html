@@ -2,42 +2,60 @@
 {% block title %}Admin Dashboard{% endblock %}
 
 {% block content %}
-<h2 class="text-center mb-4">Welcome {{ user.username }}</h2>
+<section class="py-4">
+    <div class="container">
+        <h2 class="mb-4 text-center fw-bold">👨‍🏫 Admin Dashboard</h2>
 
-<div class="row justify-content-center">
-    <div class="col-md-8">
-        <div class="card shadow-lg border-0">
-            <div class="card-body">
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">
-                        <a href="{% url 'create_quiz' %}">+ Create New Quiz</a>
-                    </li>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="text-secondary">Your Quizzes</h5>
+            <a href="{% url 'create_quiz' %}" class="btn btn-success">
+                + Create New Quiz
+            </a>
+        </div>
 
-                    {% if quizzes %}
+        {% if quizzes %}
+            <div class="table-responsive">
+                <table class="table table-hover align-middle shadow-sm rounded">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Title</th>
+                            <th>Duration</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                         {% for quiz in quizzes %}
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <div>
-                                    <strong>{{ quiz.title }}</strong> ({{ quiz.duration }} min)
-                                </div>
+                        <tr>
+                            <td><strong>{{ quiz.title }}</strong></td>
+                            <td>{{ quiz.duration }} min</td>
+                            <td>
                                 <div class="btn-group">
                                     <a href="{% url 'add_question' quiz.id %}" class="btn btn-sm btn-outline-primary">Add</a>
                                     <a href="{% url 'view_questions' quiz.id %}" class="btn btn-sm btn-outline-info">View</a>
                                     <a href="{% url 'delete_quiz' quiz.id %}" class="btn btn-sm btn-outline-danger"
-                                       onclick="return confirm('Are you sure you want to delete this quiz?');">
-                                        Delete
-                                    </a>
+                                       onclick="return confirm('Are you sure you want to delete this quiz?');">Delete</a>
                                 </div>
-                            </li>
+                            </td>
+                        </tr>
                         {% endfor %}
-                    {% else %}
-                        <li class="list-group-item text-muted">You haven’t created any quizzes yet.</li>
-                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="alert alert-info text-center">You haven’t created any quizzes yet.</div>
+        {% endif %}
 
-                    <li class="list-group-item"><a href="{% url 'view_all_results' %}">📋 View All Student Results</a></li>
-                    <li class="list-group-item"><a href="{% url 'analytics_dashboard' %}">📊 Analytics Dashboard</a></li>
-                </ul>
+        <div class="mt-4">
+            <h5 class="text-secondary">Quick Tools</h5>
+            <div class="d-flex flex-column gap-2">
+                <a href="{% url 'view_all_results' %}" class="btn btn-outline-dark">
+                    📋 View All Student Results
+                </a>
+                <a href="{% url 'analytics_dashboard' %}" class="btn btn-outline-dark">
+                    📊 Analytics Dashboard
+                </a>
             </div>
         </div>
     </div>
-</div>
+</section>
 {% endblock %}

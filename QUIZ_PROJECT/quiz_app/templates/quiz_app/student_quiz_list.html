@@ -1,11 +1,7 @@
-{% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Available Quizzes</title>
-    <link rel="stylesheet" href="{% static 'quiz_app/css/main.css' %}">
-</head>
-<body>
+{% extends 'quiz_app/base.html' %}
+{% block title %}Available Quizzes{% endblock %}
+
+{% block content %}
     <h2>Available Quizzes</h2>
     <ul>
         {% for quiz in quizzes %}
@@ -19,5 +15,4 @@
             <li>No active quizzes available.</li>
         {% endfor %}
     </ul>
-</body>
-</html>
+{% endblock %}

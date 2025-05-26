@@ -1,37 +1,79 @@
-{% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Add Question</title>
-    <link rel="stylesheet" href="{% static 'quiz_app/css/main.css' %}">
-</head>
-<body>
-    <h2>Add Questions to: "{{ quiz.title }}"</h2>
+{% extends 'quiz_app/base.html' %}
+{% load form_tags %}
+{% block title %}Add Question{% endblock %}
 
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Add Question</button>
-    </form>
+{% block content %}
+<section class="py-4">
+    <div class="container">
+        <h2 class="mb-4 text-center fw-bold">➕ Add Questions to: <span class="text-primary">"{{ quiz.title }}"</span></h2>
 
-    <hr>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-sm border-0 mb-4 rounded-4">
+                    <div class="card-body">
+                        <h5 class="mb-3 text-muted">New Question</h5>
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                {{ form.text.label_tag }}
+                                {{ form.text|add_class:"form-control" }}
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    {{ form.option1.label_tag }}
+                                    {{ form.option1|add_class:"form-control" }}
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    {{ form.option2.label_tag }}
+                                    {{ form.option2|add_class:"form-control" }}
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    {{ form.option3.label_tag }}
+                                    {{ form.option3|add_class:"form-control" }}
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    {{ form.option4.label_tag }}
+                                    {{ form.option4|add_class:"form-control" }}
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                {{ form.correct_answer.label_tag }}
+                                {{ form.correct_answer|add_class:"form-control" }}
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">➕ Add Question</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
 
-    <h3>All Questions:</h3>
-    <ol>
-        {% for q in questions %}
-            <li>{{ q.text }} <br>
-                A. {{ q.option1 }}<br>
-                B. {{ q.option2 }}<br>
-                C. {{ q.option3 }}<br>
-                D. {{ q.option4 }}<br>
-                <strong>Answer:</strong> {{ q.correct_answer }}
-            </li>
-            <br>
-        {% empty %}
-            <p>No questions added yet.</p>
-        {% endfor %}
-    </ol>
+                <div class="card shadow-sm border-0 rounded-4">
+                    <div class="card-body">
+                        <h5 class="mb-3 text-muted">📋 All Questions</h5>
+                        {% if questions %}
+                            <ol class="list-group list-group-numbered">
+                                {% for q in questions %}
+                                    <li class="list-group-item">
+                                        <strong>{{ q.text }}</strong><br>
+                                        A. {{ q.option1 }}<br>
+                                        B. {{ q.option2 }}<br>
+                                        C. {{ q.option3 }}<br>
+                                        D. {{ q.option4 }}<br>
+                                        <span class="text-success fw-bold">Correct Answer:</span> {{ q.correct_answer }}
+                                    </li>
+                                {% endfor %}
+                            </ol>
+                        {% else %}
+                            <p class="text-muted">No questions added yet.</p>
+                        {% endif %}
+                        <div class="mt-3 text-center">
+                            <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">← Back to Dashboard</a>
+                        </div>
+                    </div>
+                </div>
 
-    <a href="{% url 'dashboard' %}">← Back to Dashboard</a>
-</body>
-</html>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

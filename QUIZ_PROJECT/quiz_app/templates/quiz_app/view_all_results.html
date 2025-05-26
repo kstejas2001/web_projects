@@ -1,47 +1,62 @@
-{% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-    <title>All Student Results</title>
-    <link rel="stylesheet" href="{% static 'quiz_app/css/main.css' %}">
-</head>
-<body>
-    <h2>View Student Results</h2>
+{% extends 'quiz_app/base.html' %}
+{% block title %}All Student Results{% endblock %}
 
-    <form method="get">
-        <label for="quiz">Select Quiz:</label>
-        <select name="quiz" id="quiz" onchange="this.form.submit()">
-            <option value="">-- Select a Quiz --</option>
-            {% for quiz in quizzes %}
-                <option value="{{ quiz.id }}" {% if quiz.id == selected_quiz.id %}selected{% endif %}>
-                    {{ quiz.title }}
-                </option>
-            {% endfor %}
-        </select>
-    </form>
+{% block content %}
+<section class="py-4">
+    <div class="container">
+        <h2 class="mb-4 text-center fw-bold">📋 Student Results</h2>
 
-    {% if results %}
-        <hr>
-        <h3>Results for: {{ selected_quiz.title }}</h3>
-        <table border="1" cellpadding="8">
-            <tr>
-                <th>Student Name</th>
-                <th>Score</th>
-                <th>Total</th>
-                <th>Attempted On</th>
-            </tr>
-            {% for result in results %}
-                <tr>
-                    <td>{{ result.student.username }}</td>
-                    <td>{{ result.score }}</td>
-                    <td>{{ result.total }}</td>
-                    <td>{{ result.submitted_at|date:"d M Y, h:i A" }}</td>
-                </tr>
-            {% endfor %}
-        </table>
-    {% endif %}
+        <form method="get" class="row justify-content-center mb-4">
+            <div class="col-md-6">
+                <label for="quiz" class="form-label">Select Quiz:</label>
+                <select name="quiz" id="quiz" class="form-select" onchange="this.form.submit()">
+                    <option value="">-- Select a Quiz --</option>
+                    {% for quiz in quizzes %}
+                        <option value="{{ quiz.id }}" {% if quiz.id == selected_quiz.id %}selected{% endif %}>
+                            {{ quiz.title }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </form>
 
-    <br>
-    <a href="{% url 'dashboard' %}">← Back to Admin Dashboard</a>
-</body>
-</html>
+        {% if results %}
+            <div class="card shadow border-0 rounded-4">
+                <div class="card-body">
+                    <h5 class="mb-3">Results for: <span class="text-primary">{{ selected_quiz.title }}</span></h5>
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Student</th>
+                                    <th>Score</th>
+                                    <th>Total</th>
+                                    <th>Attempted On</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for result in results %}
+                                    <tr>
+                                        <td>{{ result.student.username }}</td>
+                                        <td>
+                                            <span class="badge bg-success">{{ result.score }}</span>
+                                        </td>
+                                        <td>{{ result.total }}</td>
+                                        <td>{{ result.submitted_at|date:"d M Y, h:i A" }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        {% elif selected_quiz %}
+            <div class="alert alert-warning mt-4 text-center">No students have taken this quiz yet.</div>
+        {% endif %}
+
+        <div class="text-center mt-4">
+            <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">← Back to Admin Dashboard</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

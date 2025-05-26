@@ -1,11 +1,7 @@
-{% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-    <title>{{ quiz.title }} - Leaderboard</title>
-    <link rel="stylesheet" href="{% static 'quiz_app/css/main.css' %}">
-</head>
-<body>
+{% extends 'quiz_app/base.html' %}
+{% block title %}Leaderboard - {{ quiz.title }}{% endblock %}
+
+{% block content %}
     <h2>🏆 Leaderboard – {{ quiz.title }}</h2>
 
     <table border="1" cellpadding="8">
@@ -27,5 +23,4 @@
 
     <br>
     <a href="{% url 'student_quiz_list' %}">← Back to Quizzes</a>
-</body>
-</html>
+{% endblock %}
