@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quiz Result</title>
+    <link rel="stylesheet" href="{% static 'quiz_app/css/main.css' %}">
+</head>
+<body>
+    <h2>{{ quiz.title }} - Your Score: {{ score }} / {{ total }}</h2>
+
+    <ul>
+        {% for r in results %}
+            <li>
+                <strong>{{ r.question }}</strong><br>
+                Your Answer: {{ r.selected }} <br>
+                Correct Answer: {{ r.correct }} <br>
+                {% if r.is_correct %}
+                    ✅ Correct
+                {% else %}
+                    ❌ Incorrect
+                {% endif %}
+            </li>
+            <hr>
+        {% endfor %}
+    </ul>
+
+    <a href="{% url 'student_quiz_list' %}">← Back to Quizzes</a>
+</body>
+</html>

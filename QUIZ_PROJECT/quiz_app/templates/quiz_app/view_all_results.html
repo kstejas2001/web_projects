@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All Student Results</title>
+    <link rel="stylesheet" href="{% static 'quiz_app/css/main.css' %}">
+</head>
+<body>
+    <h2>View Student Results</h2>
+
+    <form method="get">
+        <label for="quiz">Select Quiz:</label>
+        <select name="quiz" id="quiz" onchange="this.form.submit()">
+            <option value="">-- Select a Quiz --</option>
+            {% for quiz in quizzes %}
+                <option value="{{ quiz.id }}" {% if quiz.id == selected_quiz.id %}selected{% endif %}>
+                    {{ quiz.title }}
+                </option>
+            {% endfor %}
+        </select>
+    </form>
+
+    {% if results %}
+        <hr>
+        <h3>Results for: {{ selected_quiz.title }}</h3>
+        <table border="1" cellpadding="8">
+            <tr>
+                <th>Student Name</th>
+                <th>Score</th>
+                <th>Total</th>
+                <th>Attempted On</th>
+            </tr>
+            {% for result in results %}
+                <tr>
+                    <td>{{ result.student.username }}</td>
+                    <td>{{ result.score }}</td>
+                    <td>{{ result.total }}</td>
+                    <td>{{ result.submitted_at|date:"d M Y, h:i A" }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+
+    <br>
+    <a href="{% url 'dashboard' %}">← Back to Admin Dashboard</a>
+</body>
+</html>

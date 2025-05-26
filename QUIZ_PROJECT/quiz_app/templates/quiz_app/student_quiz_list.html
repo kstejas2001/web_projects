@@ -1,0 +1,23 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Available Quizzes</title>
+    <link rel="stylesheet" href="{% static 'quiz_app/css/main.css' %}">
+</head>
+<body>
+    <h2>Available Quizzes</h2>
+    <ul>
+        {% for quiz in quizzes %}
+            <li>
+                <strong>{{ quiz.title }}</strong> – Duration: {{ quiz.duration }} min
+                <br>
+                <a href="{% url 'attempt_quiz' quiz.id %}">Take Quiz</a> |
+                <a href="{% url 'leaderboard' quiz.id %}">View Leaderboard</a>
+            </li>
+        {% empty %}
+            <li>No active quizzes available.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Question</title>
+    <link rel="stylesheet" href="{% static 'quiz_app/css/main.css' %}">
+</head>
+<body>
+    <h2>Add Questions to: "{{ quiz.title }}"</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Add Question</button>
+    </form>
+
+    <hr>
+
+    <h3>All Questions:</h3>
+    <ol>
+        {% for q in questions %}
+            <li>{{ q.text }} <br>
+                A. {{ q.option1 }}<br>
+                B. {{ q.option2 }}<br>
+                C. {{ q.option3 }}<br>
+                D. {{ q.option4 }}<br>
+                <strong>Answer:</strong> {{ q.correct_answer }}
+            </li>
+            <br>
+        {% empty %}
+            <p>No questions added yet.</p>
+        {% endfor %}
+    </ol>
+
+    <a href="{% url 'dashboard' %}">← Back to Dashboard</a>
+</body>
+</html>

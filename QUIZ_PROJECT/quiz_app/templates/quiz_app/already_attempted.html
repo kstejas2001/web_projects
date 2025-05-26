@@ -1,0 +1,13 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Already Attempted</title>
+    <link rel="stylesheet" href="{% static 'quiz_app/css/main.css' %}">
+</head>
+<body>
+    <h2>You have already submitted the quiz: {{ quiz.title }}</h2>
+    <p>You cannot re-attempt this quiz.</p>
+    <a href="{% url 'student_quiz_list' %}">← Back to Quiz List</a>
+</body>
+</html>

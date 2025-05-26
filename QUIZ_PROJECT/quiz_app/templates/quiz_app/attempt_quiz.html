@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ quiz.title }}</title>
+    <link rel="stylesheet" href="{% static 'quiz_app/css/main.css' %}">
+    <script>
+        let timeLeft = parseInt("{{ quiz.duration|default:0 }}", 10) * 60;
+
+        function startTimer() {
+            const timerDisplay = document.getElementById('timer');
+            const quizForm = document.getElementById('quiz-form');
+
+            const interval = setInterval(() => {
+                let minutes = Math.floor(timeLeft / 60);
+                let seconds = timeLeft % 60;
+                timerDisplay.innerText = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+
+                if (timeLeft <= 0) {
+                    clearInterval(interval);
+                    alert("Time's up! Submitting...");
+                    quizForm.submit();
+                }
+
+                timeLeft -= 1;
+            }, 1000);
+        }
+
+        window.onload = startTimer;
+    </script>
+</head>
+<body>
+    <h2>{{ quiz.title }}</h2>
+    <p><strong>Time Left:</strong> <span id="timer"></span></p>
+
+    <form method="post" id="quiz-form">
+        {% csrf_token %}
+        {% for q in questions %}
+            <div>
+                <p><strong>{{ forloop.counter }}. {{ q.text }}</strong></p>
+                <label><input type="radio" name="{{ q.id }}" value="{{ q.option1 }}"> {{ q.option1 }}</label><br>
+                <label><input type="radio" name="{{ q.id }}" value="{{ q.option2 }}"> {{ q.option2 }}</label><br>
+                <label><input type="radio" name="{{ q.id }}" value="{{ q.option3 }}"> {{ q.option3 }}</label><br>
+                <label><input type="radio" name="{{ q.id }}" value="{{ q.option4 }}"> {{ q.option4 }}</label><br>
+            </div>
+            <hr>
+        {% endfor %}
+        <button type="submit">Submit Quiz</button>
+    </form>
+</body>
+</html>

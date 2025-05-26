@@ -1,0 +1,26 @@
+{% extends "quiz_app/base.html" %}
+{% block title %}Student Dashboard{% endblock %}
+{% load static %}
+
+{% block content %}
+<h2 class="text-center mb-4">Welcome {{ user.username }}</h2>
+
+<div class="row justify-content-center">
+    <div class="col-md-4">
+        <div class="card shadow-lg border-0">
+            <div class="card-body text-center">
+                <h5 class="card-title">Take Quiz</h5>
+                <a href="{% url 'student_quiz_list' %}" class="btn btn-primary">Start</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mt-4 mt-md-0">
+        <div class="card shadow-lg border-0">
+            <div class="card-body text-center">
+                <h5 class="card-title">View My Results</h5>
+                <a href="{% url 'student_results' %}" class="btn btn-success">Check</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends 'quiz_app/base.html' %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="text-center">
+    <h1 class="display-5 fw-bold">Welcome to the Quiz Creator & Auto-Grading System</h1>
+    <p class="lead">Create, Take, and Evaluate quizzes with instant results and analytics.</p>
+    <a href="{% url 'register' %}" class="btn btn-primary btn-lg mt-3">Get Started</a>
+</div>
+{% endblock %}

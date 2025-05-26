@@ -1,0 +1,24 @@
+{% extends 'quiz_app/base.html' %}
+{% block title %}View Questions{% endblock %}
+
+{% block content %}
+<h3>Questions for "{{ quiz.title }}"</h3>
+
+<ol>
+    {% for q in questions %}
+        <li>
+            <strong>{{ q.text }}</strong><br>
+            A. {{ q.option1 }}<br>
+            B. {{ q.option2 }}<br>
+            C. {{ q.option3 }}<br>
+            D. {{ q.option4 }}<br>
+            <b>Answer:</b> {{ q.correct_answer }}
+        </li>
+        <hr>
+    {% empty %}
+        <p>No questions added yet.</p>
+    {% endfor %}
+</ol>
+
+<a href="{% url 'dashboard' %}" class="btn btn-secondary">← Back to Dashboard</a>
+{% endblock %}

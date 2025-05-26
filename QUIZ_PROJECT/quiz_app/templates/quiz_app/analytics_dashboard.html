@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Analytics Dashboard</title>
+    <link rel="stylesheet" href="{% static 'quiz_app/css/main.css' %}">
+</head>
+<body>
+    <h2>📊 Analytics Dashboard</h2>
+
+    <ul>
+        <li><strong>Total Quizzes:</strong> {{ total_quizzes }}</li>
+        <li><strong>Total Students:</strong> {{ total_students }}</li>
+        <li><strong>Total Quiz Attempts:</strong> {{ total_attempts }}</li>
+        <li><strong>Average Score:</strong> {{ average_score|floatformat:2 }}</li>
+        <li><strong>Highest Score:</strong> {{ top_score }}</li>
+        <li><strong>Lowest Score:</strong> {{ low_score }}</li>
+
+        {% if most_attempted_quiz %}
+            <li>
+                <strong>Most Attempted Quiz:</strong>
+                {{ most_attempted_quiz.quiz__title }} ({{ most_attempted_quiz.count }} attempts)
+            </li>
+        {% else %}
+            <li><strong>Most Attempted Quiz:</strong> N/A</li>
+        {% endif %}
+    </ul>
+
+    <a href="{% url 'dashboard' %}">← Back to Admin Dashboard</a>
+</body>
+</html>

@@ -1,0 +1,22 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Quiz Results</title>
+    <link rel="stylesheet" href="{% static 'quiz_app/css/main.css' %}">
+</head>
+<body>
+    <h2>Your Past Results</h2>
+    <ul>
+        {% for result in results %}
+            <li>
+                <strong>{{ result.quiz.title }}</strong> – Score: {{ result.score }}/{{ result.total }}<br>
+                Taken on: {{ result.submitted_at|date:"d M Y, h:i A" }}
+            </li>
+        {% empty %}
+            <li>No results found.</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'student_quiz_list' %}">← Back to Quiz List</a>
+</body>
+</html>
