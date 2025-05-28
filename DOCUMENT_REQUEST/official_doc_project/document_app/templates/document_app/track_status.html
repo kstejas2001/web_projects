@@ -22,17 +22,20 @@
             <tr>
                 <td>{{ req.full_name }}</td>
                 <td>{{ req.document_type }}</td>
-                <td>{% if req.status == "Pending" %}
-                    <span class="badge badge-pending">Pending</span>
-                    {% elif req.status == "Approved" %}
-                    <span class="badge badge-approved">Approved</span>
+                <td>
+                    {% if req.status == "Approved" %}
+                        <span class="badge badge-approved">✅ Approved</span>
+                    {% elif req.status == "Rejected" %}
+                        <span class="badge badge-rejected">❌ Rejected</span><br>
+                        <small style="color: #ff8080;">Reason: {{ req.admin_remarks }}</small>
                     {% else %}
-                    <span class="badge badge-rejected">Rejected</span>
+                        <span class="badge badge-pending">⏳ Pending</span>
                     {% endif %}
                 </td>
+
                 <td>{{ req.submitted_at }}</td>
                 <td>
-                    {% if req.final_document %}
+                    {% if req.status == "Approved" and req.final_document %}
                         <a href="{{ req.final_document.url }}" class="download-btn" download>Download</a>
                     {% else %}
                         Not Available

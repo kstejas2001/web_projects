@@ -78,6 +78,7 @@ def request_document(request):
     if request.method == 'POST':
         full_name=request.POST['full_name']
         dob = request.POST.get('dob')
+        gender = request.POST.get('gender')
         address = request.POST['address']
         document_type = request.POST['document_type']
         id_proof = request.FILES['id_proof']
@@ -88,15 +89,38 @@ def request_document(request):
             user=request.user,
             full_name=full_name,
             dob=dob,
+            gender=gender,
             address=address,
             document_type=document_type,
             id_proof=id_proof,
             address_proof=address_proof,
         )
+
+        # if PAN Card, store father_name
         if document_type == "PAN Card":
             doc_request.father_name = request.POST.get('father_name')
-            doc_request.save()  # Save the updated fields
-        
+
+        # if RationCard, store additional fields
+        if document_type == "RationCard":
+            doc_request.family_head = request.POST.get('family_head')
+            doc_request.card_type = request.POST.get('card_type')
+            doc_request.ration_members = request.POST.get('ration_members')
+
+        if document_type == "BirthCertificate":
+            doc_request.child_name = request.POST.get('child_name')
+            doc_request.birth_time = request.POST.get('birth_time')
+            doc_request.place_of_birth = request.POST.get('place_of_birth')
+            doc_request.mother_name = request.POST.get('mother_name')
+
+        if document_type == "DeathCertificate":
+            doc_request.deceased_name = request.POST.get('deceased_name')
+            doc_request.death_date = request.POST.get('death_date')
+            doc_request.death_time = request.POST.get('death_time')
+            doc_request.place_of_death = request.POST.get('place_of_death')
+            doc_request.relation_to_deceased = request.POST.get('relation_to_deceased')
+
+
+        doc_request.save()  # Save the updated fields
         return redirect('home') # Redirect to home after request submission
     return render(request, 'document_app/request_form.html')
 
@@ -113,6 +137,7 @@ def update_request(request, request_id):
     if request.method == 'POST':
         status = request.POST['status']
         remarks = request.POST.get('remarks', '')
+        final_doc = request.FILES.get('final_document')
 
         doc_request.status = status
         doc_request.admin_remarks = remarks
@@ -137,10 +162,36 @@ def update_request(request, request_id):
                 'aadhaar_number': f"XXXX-XXXX-{str(doc_request.id).zfill(4)}",
                 'pan_number': doc_request.pan_number if doc_request.pan_number else 'N/A',
                 'user_id': str(doc_request.user.id),
+                'request_id': doc_request.id,
+
+                 # Ration-specific fields
+                'family_head': doc_request.family_head or 'N/A',
+                'card_type': doc_request.card_type or 'N/A',
+                'ration_members': doc_request.ration_members.strip().split('\n') if doc_request.ration_members else [],
+
+                # Birth certificate specific fields
+                'birth_time': doc_request.birth_time or 'N/A',
+                'child_name': doc_request.child_name or 'N/A',
+                'place_of_birth': doc_request.place_of_birth or 'N/A',
+                'mother_name': doc_request.mother_name or 'N/A',
+
+                # Death certificate specific fields
+                'deceased_name': doc_request.deceased_name or 'N/A',
+                'death_date': doc_request.death_date.strftime('%d-%m-%Y') if doc_request.death_date else 'N/A',
+                'death_time': doc_request.death_time or 'N/A',
+                'place_of_death': doc_request.place_of_death or 'N/A',
+                'relation_to_deceased': doc_request.relation_to_deceased or 'N/A',
+
             }           
             generate_certificate(user_data, doc_request.document_type, doc_request)
             doc_request.save()
-            
+            return redirect('admin_panel')
+        elif status == 'Rejected':
+            if not remarks.strip():
+                messages.error(request, "Please provide a reason for rejection")
+                return render(request, 'document_app/update_request.html', {'doc_request': doc_request})
+            doc_request.final_document = None
+            doc_request.save()
             return redirect('admin_panel')
         
     return render(request, 'document_app/update_request.html', {'doc_request': doc_request})

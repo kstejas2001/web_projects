@@ -319,15 +319,21 @@ body {
     font-weight: bold;
 }
 .badge-pending {
-    background-color: #ffc107;
+    background-color: #ffbb33;
+    padding: 4px 8px;
+    border-radius: 5px;
     color: black;
 }
 .badge-approved {
-    background-color: #28a745;
+    background-color: #00c851;
+    padding: 4px 8px;
+    border-radius: 5px;
     color: white;
 }
 .badge-rejected {
-    background-color: #dc3545;
+    background-color: #ff4444;
+    padding: 4px 8px;
+    border-radius: 5px;
     color: white;
 }
 /* Download-btn */
@@ -453,3 +459,46 @@ body {
 .update-card button:hover{
     background-color: #00c3c3;
 }
+
+.verification-preview,
+.file-preview,
+.checklist-section {
+    background-color: #1f1f1f;
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    border-left: 5px solid #00ffc3;
+}
+
+.btn-link {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 8px 15px;
+    background-color: #00ffc3;
+    color: #000;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.btn-link:hover {
+    background-color: #00ffdd;
+    box-shadow: 0 0 10px #00ffc3;
+}
+.form-card input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #00ffc3;
+    background-color: #1c1c1c;
+    color: #fff;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.form-card input:focus {
+    border-color: #00ffdd;
+    outline: none;
+    box-shadow: 0 0 5px #00ffc3;
+}
+

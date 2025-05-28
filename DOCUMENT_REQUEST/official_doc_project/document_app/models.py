@@ -21,6 +21,26 @@ class DocumentRequest(models.Model):
     gender = models.CharField(max_length=10, null=True, blank=True)
     father_name = models.CharField(max_length=100, null=True, blank=True)
     pan_number = models.CharField(max_length=10, null=True, blank=True)
+
+    # Ration card
+    family_head = models.CharField(max_length=100, null=True, blank=True)
+    card_type = models.CharField(max_length=50, null=True, blank=True)
+    ration_members = models.TextField(null=True, blank=True)
+
+    # Birth certificate fields
+    child_name = models.CharField(max_length=100, null=True, blank=True)
+    birth_time = models.CharField(max_length=20, null=True, blank=True)
+    place_of_birth = models.CharField(max_length=100, null=True, blank=True)
+    mother_name = models.CharField(max_length=100, null=True, blank=True)
+
+    # Death certificate fields
+    deceased_name = models.CharField(max_length=100, null=True, blank=True)
+    death_date = models.DateField(null=True, blank=True)
+    death_time = models.CharField(max_length=20, null=True, blank=True)
+    place_of_death = models.CharField(max_length=100, null=True, blank=True)
+    relation_to_deceased = models.CharField(max_length=100, null=True, blank=True)
+
+    
     document_type = models.CharField(max_length=20, choices=DOCUMENT_CHOICES)
     id_proof = models.FileField(upload_to='id_proofs/')
     address_proof = models.FileField(upload_to='address_proofs/')

@@ -2,21 +2,58 @@
 {% load static %}
 
 {% block content %}
-<div class="update-card">
-    <h2>Update Request:{{ doc_request.full_name }} - {{ doc_request.document_type }}</h2>
 
+<div class="update-card">
+    <h2>Update Request: {{ doc_request.full_name }} - {{ doc_request.document_type }}</h2>
+
+    <!-- User Details Preview -->
+    <div class="verification-preview">
+        <p><strong>Full Name:</strong> {{ doc_request.full_name }}</p>
+        <p><strong>DOB:</strong> {{ doc_request.dob }}</p>
+        <p><strong>Gender:</strong> {{ doc_request.gender }}</p>
+        <p><strong>Address:</strong> {{ doc_request.address }}</p>
+    </div>
+
+    <!-- Uploaded Files -->
+    <div class="file-preview">
+        <p><strong>ID Proof:</strong>
+            {% if doc_request.id_proof %}
+                <a href="{{ doc_request.id_proof.url }}" target="_blank">View ID Proof</a>
+            {% else %}
+                Not uploaded
+            {% endif %}
+        </p>
+        <p><strong>Address Proof:</strong>
+            {% if doc_request.address_proof %}
+                <a href="{{ doc_request.address_proof.url }}" target="_blank">View Address Proof</a>
+            {% else %}
+                Not uploaded
+            {% endif %}
+        </p>
+    </div>
+
+    <!-- Checklist -->
+    <div class="checklist-section">
+        <h4>Verification Checklist</h4>
+        <label><input type="checkbox"> Name matches on ID</label><br>
+        <label><input type="checkbox"> DOB matches on ID</label><br>
+        <label><input type="checkbox"> Document is clear and readable</label><br>
+        <label><input type="checkbox"> ID appears authentic</label><br>
+    </div>
+
+    <!-- Admin Form -->
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
 
         <label>Status:</label>
-        <select name="status" required>
+        <select name="status" id="status" required onchange="toggleRemarks()">
             <option value="Pending" {% if doc_request.status == "Pending" %}selected{% endif %}>Pending</option>
             <option value="Approved" {% if doc_request.status == "Approved" %}selected{% endif %}>Approved</option>
             <option value="Rejected" {% if doc_request.status == "Rejected" %}selected{% endif %}>Rejected</option>
         </select>
 
-        <label>Remarks:</label><br>
-        <textarea name="remarks" rows="3" placeholder="Optional...">{{ document.remarks }}</textarea>
+        <label>Admin Remarks:</label><br>
+        <textarea name="remarks" id="remarks" rows="3" placeholder="Give clear reason if Rejected..." required>{{ document.remarks }}</textarea>
 
         <label>Upload Final Document (PDF/Image):</label>
         <input type="file" name="final_document">
@@ -24,7 +61,17 @@
         <button type="submit">Save</button>
     </form>
 </div>
+
+<script>
+function toggleRemarks() {
+    const status = document.getElementById("status").value;
+    const remarks = document.getElementById("remarks");
+    if (status === "Rejected") {
+        remarks.setAttribute("required", "required");
+    } else {
+        remarks.removeAttribute("required");
+    }
+}
+</script>
+
 {% endblock %}
-
-
-

@@ -24,28 +24,81 @@
         <!-- Dropdown for document type -->
         <select name="document_type" id="document_type" onchange="toggleExtraFields()" required>
             <option value="">-- Select Document --</option>
-            <option value="Birth_Certificate">Birth Certificate</option>
+            <option value="BirthCertificate">Birth Certificate</option>
             <option value="RationCard">Ration Card</option>
             <option value="Aadhaar">Aadhaar Card</option>
             <option value="PAN Card">PAN Card</option>
             <option value="VoterID">Voter ID</option>
             <option value="Marriage_Certificate">Marriage Certificate</option>
             <option value="Passport">Passport</option>
-            <option value="Death_Certificate">Death Certificate</option>
+            <option value="DeathCertificate">Death Certificate</option>
         </select>
-
+        
+        <!-- ID & Address Proof Uploads -->
         <label style="color: #00ffea;">Upload ID Proof (PDF/Image):</label>
         <input type="file" name="id_proof" accept=".pdf, .jpg, .jpeg, .png" required>
    
         <label style="color: #00ffea;">Upload Address Proof (PDF/Image):</label>
         <input type="file" name="address_proof" accept=".pdf, .jpg, .jpeg, .png" required>
-   
-        <button type="submit">Submit Request</button>
 
+        <!-- Extra fields for PAN Card -->
         <div id="pan-fields" style="display: none;">
             <label>Father's Name:</label>
             <input type="text" name="father_name" placeholder="Father's Name" id="father_name" title="Please enter a valid name." required>
         </div>
+
+        <!-- Ration Card Fields -->
+        <div id="ration-fields" style="display: none; margin-top: 15px;">
+            <label style="color: #00ffea;">Family Head:</label>
+            <input type="text" name="family_head" placeholder="Family Head Name">
+            <label style="color: #00ffea;">Card Type:</label>
+            <select name="card_type">
+                <option value="">--Select Card Type--</option>
+                <option value="PHH">PHH</option>
+                <option value="AAY">AAY</option>
+                <option value="APL">APL</option>
+                <option value="BPL">BPL</option>
+            </select>
+            <label style="color: #00ffea;">Family Members<br><small>(Format: Name,Age,Gender,Relation — one per line)</small></label>
+            <textarea name="ration_members" rows="4" placeholder="e.g.&#10;Ravi Kumar,45,Male,Self&#10;Meena Kumari,40,Female,Wife"></textarea>
+        </div>
+
+        <!-- Birth Certificate Fields -->
+        <div id="birth-fields" style="display: none; margin-top: 15px;">
+            <label style="color: #00ffea;">Child's Full Name:</label>
+            <input type="text" name="child_name" placeholder="Child's Name">
+
+            <label style="color: #00ffea;">Time of Birth:</label>
+            <input type="text" name="birth_time" placeholder="HH:MM AM/PM">
+
+            <label style="color: #00ffea;">Place of Birth:</label>
+            <input type="text" name="place_of_birth" placeholder="City or Hospital">
+
+            <label style="color: #00ffea;">Mother's Name:</label>
+            <input type="text" name="mother_name" placeholder="Mother's Full Name">
+        </div>
+
+        <!-- Death Certificate Fields -->
+        <div id="death-fields" style="display: none; margin-top: 15px;">
+            <label style="color: #00ffea;">Deceased Full Name:</label>
+            <input type="text" name="deceased_name" placeholder="Full Name of Deceased">
+
+            <label style="color: #00ffea;">Date of Death:</label>
+            <input type="date" name="death_date" placeholder="YYYY-MM-DD">
+
+            <label style="color: #00ffea;">Time of Death:</label>
+            <input type="text" name="death_time" placeholder="HH:MM AM/PM">
+
+            <label style="color: #00ffea;">Place of Death:</label>
+            <input type="text" name="place_of_death" placeholder="City or Hospital Name">
+
+            <label style="color: #00ffea;">Relation to Deceased:</label>
+            <input type="text" name="relation_to_deceased" placeholder="e.g. Son, Daughter, Wife">
+        </div>
+
+        <!-- Submit button-->
+        <button type="submit">Submit Request</button>
+
     </form>
 </div>
 
@@ -53,14 +106,27 @@
 function toggleExtraFields() {
     const docType = document.getElementById("document_type").value;
     const panFields = document.getElementById("pan-fields");
+    const rationFields = document.getElementById("ration-fields");
+    const birthFields = document.getElementById("birth-fields");
     const fatherInput = document.getElementById("father_name");
+    const deathFields = document.getElementById("death-fields");
     
+    // Reset all
+    panFields.style.display = "none";
+    rationFields.style.display = "none";
+    birthFields.style.display = "none";
+    fatherInput.removeAttribute("required");
+    deathFields.style.display = "none";
+
     if (docType === "PAN Card") {
-            panFields.style.display = "block";
-            fatherInput.setAttribute("required", "required");
-    } else {
-            panFields.style.display = "none";
-            fatherInput.removeAttribute("required");
+        panFields.style.display = "block";
+        fatherInput.setAttribute("required", "required");
+    } else if (docType === "RationCard") {
+        rationFields.style.display = "block";
+    } else if (docType === "BirthCertificate") {
+        birthFields.style.display = "block";
+    } else if (docType === "DeathCertificate") {
+        deathFields.style.display = "block";
     }
 }
 </script>

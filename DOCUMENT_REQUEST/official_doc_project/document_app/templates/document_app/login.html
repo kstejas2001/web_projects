@@ -20,5 +20,11 @@
     </form>
     
     <p style="margin-top: 20px;">Don't have an account? <a href="{% url 'register' %}">Register Now</a></p>
+
+    {% if user.is_authenticated %}
+    <p style="margin-top: 10px; font-size: 14px;">
+        <a href="{% url 'change_password' %}" style="color: #00ffc3;">Forgot Password?</a>
+    </p>
+    {% endif %}
 </div>
 {% endblock %}
