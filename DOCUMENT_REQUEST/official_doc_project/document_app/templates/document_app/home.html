@@ -5,14 +5,26 @@
 <div class="hero-section">
     <div class="hero-content">
         <h1>Welcome to the Official Document Request Portal</h1>
-        <p>Seamlessly request your official document like adharr, PAN, Birth Certificates, and more - from the comfort of your home.</p>
-        <p>Our platform is designed to simplyfy the process of obtained essential documents, ensuring a hassle-free experience.</p>
-
+        <p class="tagline">Simplify the process of obtaining essential documents from the comfort of your home.</p>
+        <p class="description">Request your Aadhaar, PAN, Birth Certificates, and more with ease. We ensure a seamless, hassle-free experience.</p>
+        
         {% if user.is_authenticated %}
-        <a href="{% url 'request_document' %}" class="hero-btn">Apply Now</a>
+        <a href="{% url 'request_document' %}" class="cta-btn">Apply Now</a>
         {% else %}
-        <a href="{% url 'register' %}" class="hero-btn">Register Now</a>
+        <a href="{% url 'register' %}" class="cta-btn">Register Now</a>
         {% endif %}
     </div>
+</div>
+
+<div class="info-section">
+    <h2>Our Services</h2>
+    <p>We offer a variety of government services that you can apply for online, anytime, anywhere.</p>
+    <ul>
+        <li>Aadhaar Card</li>
+        <li>PAN Card</li>
+        <li>Birth Certificate</li>
+        <li>Passport</li>
+        <li>Ration Card</li>
+    </ul>
 </div>
 {% endblock %}

@@ -1,504 +1,783 @@
 body {
-    background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-    font-family: 'Poppins', sans-serif;
-    /* background-image: url('../images/neon_bg7.jpg');
+  background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+  font-family: "Poppins", sans-serif;
+  /* background-image: url('../images/neon_bg7.jpg');
     background-size: cover; */
-    color: #fff;
-    margin: 0;
-    padding: 0;
-    animation: fadeInBody 1.2s ease-in;
+  color: #fff;
+  margin: 0;
+  padding-top: 80px;
+  animation: fadeInBody 1.2s ease-in;
 }
 @keyframes fadeInBody {
-    from { opacity: 0; }
-    to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 /* Navbar Styles */
 .navbar {
-    background-color: #111111;
-    padding: 15px 0px;
-    transition: background-color 0.5s ease;
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 1000;
+  background-color: #111111;
+  padding: 15px 0px;
+  transition: background-color 0.5s ease;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
 }
 .nav-container {
-    width: 90%;
-    margin: auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  width: 90%;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .logo a {
-    color: #00ffea;
-    font-size: 26px;
-    font-weight: bold;
-    text-decoration: none;
-    padding-left: 20px;
-    font-family: 'Orbitron', sans-serif;
-    text-shadow: 0 0 10px #00ffea;
+  color: #00ffea;
+  font-size: 26px;
+  font-weight: bold;
+  text-decoration: none;
+  padding-left: 20px;
+  font-family: "Orbitron", sans-serif;
+  text-shadow: 0 0 10px #00ffea;
 }
 .nav-links {
-    list-style: none;
-    display: flex;
+  list-style: none;
+  display: flex;
 }
 .nav-links li {
-    margin-left: 20px;
+  margin-left: 20px;
 }
 .nav-links a {
-    color: #00ffea;
-    font-size: 16px;
-    text-decoration: none;
-    font-weight: 500;
-    transition: color 0.3s ease;
+  color: #00ffea;
+  font-size: 16px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
 }
 .nav-links a:hover {
-    color: #00ffea;
-    text-shadow: 0 0 8px #00ffea;
+  color: #00ffea;
+  text-shadow: 0 0 8px #00ffea;
 }
 
 /* Hero Section Styling */
 .hero-section {
-    background: url('../images/neon_bg6.jpg') no-repeat center center/cover;
-    background-size: cover;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 80px;
-    color: white;
-    position: relative;
-    z-index: 0;
-    animation: fadeInHero 1.5s ease-in-out;
+  background: url("../images/neon_bg6.jpg") no-repeat center center/cover;
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+  color: white;
+  z-index: 0;
+  animation: fadeInHero 1.5s ease-in-out;
 }
 @keyframes fadeInHero {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 .hero-content {
-    background-color: rgba(17, 17, 17, 0.75);
-    padding: 40px;
-    border-radius: 15px;
-    max-width: 800px;
-    box-shadow: 0 0 20px #00ffea;
-    animation: fadeInContent 1s ease;
+  background-color: rgba(17, 17, 17, 0.75);
+  padding: 40px;
+  border-radius: 15px;
+  max-width: 800px;
+  box-shadow: 0 0 20px #00ffea;
+  animation: fadeInContent 1s ease;
+}
+@keyframes fadeInContent {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 .hero-section h1 {
-    font-size: 32px;
+  font-size: 32px;
+  margin-bottom: 20px;
+  color: #00ffea;
+  text-shadow: 0 0 10px #00ffea;
+}
+.hero-content h1 {
+    font-size: 3em;
+    font-weight: bold;
+    color: #00ffc3;
     margin-bottom: 20px;
-    color: #00ffea;
-    text-shadow: 0 0 10px #00ffea;
+}
+.hero-content .tagline {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+    color: #fff;
+    font-weight: 300;
+}
+
+.hero-content .description {
+    font-size: 1.2em;
+    margin-bottom: 30px;
+    color: #ccc;
+    font-weight: 200;
+}
+
+.hero-content .cta-btn {
+    background-color: #00ffc3;
+    padding: 15px 40px;
+    border-radius: 25px;
+    color: #000;
+    font-size: 1.1em;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background-color 0.3s;
+    display: inline-block;
+}
+
+.hero-content .cta-btn:hover {
+    background-color: #00ffdd;
+}
+
+/* Info Section Styling */
+.info-section {
+    padding: 50px 20px;
+    text-align: center;
+    background-color: #1a1a1a;
+    color: #fff;
+}
+
+.info-section h2 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    color: #00ffc3;
+}
+
+.info-section p {
+    font-size: 1.2em;
+    margin-bottom: 30px;
+}
+
+.info-section ul {
+    list-style: none;
+    padding: 0;
+    font-size: 1.1em;
+}
+
+.info-section ul li {
+    margin-bottom: 15px;
+    font-weight: 300;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero-content h1 {
+        font-size: 2.2em;
+    }
+    .hero-content .tagline {
+        font-size: 1.2em;
+    }
+    .hero-content .cta-btn {
+        font-size: 1em;
+        padding: 12px 30px;
+    }
 }
 .hero-content p {
-    font-size: 16px;
-    margin-bottom: 10px;
-    color: #00ffea;
+  font-size: 16px;
+  margin-bottom: 10px;
+  color: #00ffea;
 }
 .hero-btn {
-    display: inline-block;
-    margin-top: 20px;
-    padding: 12px 24px;
-    font-size: 16px;
-    background: #00ffea;
-    color: #111;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
+  display: inline-block;
+  margin-top: 20px;
+  padding: 12px 24px;
+  font-size: 16px;
+  background: #00ffea;
+  color: #111;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
 }
 .hero-btn:hover {
-    background: #00c3c3;}
-
+  background: #00c3c3;
+}
 
 /* Login Card Styling */
 .login-card {
-    width: 400px;
-    background: #111111;
-    padding: 30px;
-    margin: 100px auto 50px auto;
-    border-radius: 15px;
-    box-shadow: 0 0 20px #00ffea;
-    animation: fadeInCard 1s ease;
-    color: white;
-    backdrop-filter: blur(5px);
+  width: 400px;
+  background: #111111;
+  padding: 30px;
+  margin: 100px auto 50px auto;
+  border-radius: 15px;
+  box-shadow: 0 0 20px #00ffea;
+  animation: fadeInCard 1s ease;
+  color: white;
+  backdrop-filter: blur(5px);
 }
 @keyframes fadeInCard {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 .login-card h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #00ffea;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #00ffea;
 }
-.login-card input, .login-card button {
-    width: 100%;
-    padding: 12px;
-    margin: 10px 0;
-    border-radius: 8px;
-    border: none;
-    font-size: 16px;
-    box-sizing: border-box;
+.login-card input,
+.login-card button {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 8px;
+  border: none;
+  font-size: 16px;
+  box-sizing: border-box;
 }
 .login-card input {
-    border: 1px solid #00ffea;
-    background: #222;
-    color: white;
+  border: 1px solid #00ffea;
+  background: #222;
+  color: white;
 }
 .login-card input::placeholder {
-    color: #00ffea;
+  color: #00ffea;
 }
 .login-card button {
-    background-color: #00ffea;
-    border: none;
-    color: #111;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  background-color: #00ffea;
+  border: none;
+  color: #111;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .login-card button:hover {
-    background-color: #00c3a0;
-    color: #fff;
+  background-color: #00c3a0;
+  color: #fff;
 }
 @keyframes fadeInCard {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Register Card Styling */
 .register-card {
-    width: 400px;
-    background: #111111;
-    padding: 30px;
-    margin: 100px auto 50px auto;
-    border-radius: 15px;
-    box-shadow: 0 0 2px #00ffea;
-    animation: fadeInCard 1s ease;
-    color: white;
-    backdrop-filter: blur(5px);
+  width: 400px;
+  background: #111111;
+  padding: 30px;
+  margin: 100px auto 50px auto;
+  border-radius: 15px;
+  box-shadow: 0 0 2px #00ffea;
+  animation: fadeInCard 1s ease;
+  color: white;
+  backdrop-filter: blur(5px);
 }
 @keyframes fadeInCard {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 .register-card h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #00ffea;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #00ffea;
 }
-.register-card input, .register-card button {
-    width: 100%;
-    padding: 12px;
-    margin: 10px 0;
-    border-radius: 8px;
-    font-size: 16px;
-    box-sizing: border-box;
+.register-card input,
+.register-card button {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 8px;
+  font-size: 16px;
+  box-sizing: border-box;
 }
 .register-card input {
-    border: 1px solid #00ffea;
-    background: #222;
-    color: white;
+  border: 1px solid #00ffea;
+  background: #222;
+  color: white;
 }
 .register-card input::placeholder {
-    color: #00ffea;
+  color: #00ffea;
 }
 .register-card button {
-    background-color: #00ffea;
-    border: none;
-    color: #111;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  background-color: #00ffea;
+  border: none;
+  color: #111;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 .register-card button:hover {
-    background-color: #00c3c3;
-    color: #fff;
+  background-color: #00c3c3;
+  color: #fff;
 }
 
 /* Request Form Card */
 .request-card {
-    width: 500px;
-    background: #111111;
-    padding: 30px;
-    margin: 100px auto 50px auto;
-    border-radius: 15px;
-    box-shadow: 0 0 20px #00ffea;
-    animation: fadeInCard 1s ease;
-    color: white;
+  width: 500px;
+  background: #111111;
+  padding: 30px;
+  margin: 100px auto 50px auto;
+  border-radius: 15px;
+  box-shadow: 0 0 20px #00ffea;
+  animation: fadeInCard 1s ease;
+  color: white;
 }
 @keyframes fadeInCard {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 .request-card h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #00ffea;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #00ffea;
 }
-.request-card input, .request-card select, .request-card textarea, .request-card button {
-    width: 100%;
-    padding: 12px;
-    margin: 10px 0;
-    border-radius: 8px;
-    font-size: 16px;
-    box-sizing: border-box;
+.request-card input,
+.request-card select,
+.request-card textarea,
+.request-card button {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 8px;
+  font-size: 16px;
+  box-sizing: border-box;
 }
-.request-card input, .request-card select, .request-card textarea {
-    border: 1px solid #00ffea;
-    background: #222;
-    color: white;
+.request-card input,
+.request-card select,
+.request-card textarea {
+  border: 1px solid #00ffea;
+  background: #222;
+  color: white;
 }
-.request-card input::placeholder, .request-card textarea::placeholder {
-    color: #00ffea;
+.request-card input::placeholder,
+.request-card textarea::placeholder {
+  color: #00ffea;
 }
 .request-card button {
-    background-color: #00ffea;
-    border: none;
-    color: #111;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  background-color: #00ffea;
+  border: none;
+  color: #111;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 .request-card button:hover {
-    background-color: #00c3a0;
-    color: #fff;
+  background-color: #00c3a0;
+  color: #fff;
 }
 
 /* Track Status Card */
 .status-card {
-    width: 90%;
-    background: #111111;
-    padding: 30px;
-    margin: 100px auto 50px auto;
-    border-radius: 15px;
-    box-shadow: 0 0 20px #00ffea;
-    animation: fadeInCard 1s ease;
-    color: white;
+  width: 90%;
+  background: #111111;
+  padding: 30px;
+  margin: 100px auto 50px auto;
+  border-radius: 15px;
+  box-shadow: 0 0 20px #00ffea;
+  animation: fadeInCard 1s ease;
+  color: white;
 }
 @keyframes fadeInCard {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 .status-card h2 {
-    text-align: center;
-    margin-bottom: 10px;
-    color: #00ffea;
+  text-align: center;
+  margin-bottom: 10px;
+  color: #00ffea;
 }
-.status-card table{
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px;
-    background-color: #111;
-    color: white;
-    font-size: 15px;
-    box-shadow: 0 0 10px rgba(0, 255, 234, 0.2);
+.status-card table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px;
+  background-color: #111;
+  color: white;
+  font-size: 15px;
+  box-shadow: 0 0 10px rgba(0, 255, 234, 0.2);
 }
-.status-card th, .status-card td {
-    padding: 12px;
-    text-align: center;
-    border-bottom: 1px solid #333;
-    transition: background-color 0.3s ease;
+.status-card th,
+.status-card td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #333;
+  transition: background-color 0.3s ease;
 }
 .status-card th {
-    background-color: #00ffea;
-    color: #111;
-    font-weight: bold;
+  background-color: #00ffea;
+  color: #111;
+  font-weight: bold;
 }
 .status-card tr:hover {
-    background-color: rgba(0, 255, 234, 0.1);
+  background-color: rgba(0, 255, 234, 0.1);
 }
 
 /* Badge styles */
 .badge {
-    padding: 6px 12px;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: bold;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: bold;
 }
 .badge-pending {
-    background-color: #ffbb33;
-    padding: 4px 8px;
-    border-radius: 5px;
-    color: black;
+  background-color: #ffbb33;
+  padding: 4px 8px;
+  border-radius: 5px;
+  color: black;
 }
 .badge-approved {
-    background-color: #00c851;
-    padding: 4px 8px;
-    border-radius: 5px;
-    color: white;
+  background-color: #00c851;
+  padding: 4px 8px;
+  border-radius: 5px;
+  color: white;
 }
 .badge-rejected {
-    background-color: #ff4444;
-    padding: 4px 8px;
-    border-radius: 5px;
-    color: white;
+  background-color: #ff4444;
+  padding: 4px 8px;
+  border-radius: 5px;
+  color: white;
 }
 /* Download-btn */
 .download-btn {
-    display: inline-block;
-    padding: 8px 14px;
-    background: #00ffea;
-    color: #111;
-    border-radius: 6px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
+  display: inline-block;
+  padding: 8px 14px;
+  background: #00ffea;
+  color: #111;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
 }
 .download-btn:hover {
-    background: #00c3c3;
-    color: #fff;
+  background: #00c3c3;
+  color: #fff;
 }
 
 /* Admin Panel */
 .admin-panel {
-    width: 90%;
-    margin: 120px auto 50px auto;
-    animation: fadeInCard 1s ease;
-    color: white;
+  width: 90%;
+  margin: 120px auto 50px auto;
+  animation: fadeInCard 1s ease;
+  color: white;
 }
 @keyframes fadeInCard {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 /* Stats Cards */
-.stats{
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-    margin-bottom: 20px;
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-bottom: 20px;
 }
 .stat-card {
-    background: #111111;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px #00ffea;
-    text-align: center;
-    color: white;
+  background: #111111;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #00ffea;
+  text-align: center;
+  color: white;
 }
 .stat-card h3 {
-    margin-bottom: 10px;
-    color: #00ffea;
+  margin-bottom: 10px;
+  color: #00ffea;
 }
 .stat-card p {
-    font-size: 24px;
-    font-weight: bold;
+  font-size: 24px;
+  font-weight: bold;
 }
 /* Request Table */
 .request-table table {
-    width: 100%;
-    background: #111;
-    border-collapse: collapse;
+  width: 100%;
+  background: #111;
+  border-collapse: collapse;
 }
-.request-table th, .request-table td {
-    padding: 12px;
-    border: 1px solid #333;
-    text-align: center;
+.request-table th,
+.request-table td {
+  padding: 12px;
+  border: 1px solid #333;
+  text-align: center;
 }
 .update-btn {
-    display: inline-block;
-    padding: 8px 12px;
-    background: #00ffea;
-    color: #111;
-    border-radius: 6px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
+  display: inline-block;
+  padding: 8px 12px;
+  background: #00ffea;
+  color: #111;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
 }
 .update-btn:hover {
-    background: #00c3c3;
-    color: #fff;
+  background: #00c3c3;
+  color: #fff;
 }
 
 /* Update Request Form (Admin) */
 .update-card {
-    width: 500px;
-    background: #111111;
-    padding: 30px;
-    margin: 100px auto 50px auto;
-    border-radius: 15px;
-    box-shadow: 0 0 20px #00ffea;
-    animation: fadeInCard 1s ease;
-    color: white;
+  width: 500px;
+  background: #111111;
+  padding: 30px;
+  margin: 100px auto 50px auto;
+  border-radius: 15px;
+  box-shadow: 0 0 20px #00ffea;
+  animation: fadeInCard 1s ease;
+  color: white;
 }
-.update-card h2{
-    text-align: center;
-    color: #00ffea;
-    margin-bottom: 20px;
+.update-card h2 {
+  text-align: center;
+  color: #00ffea;
+  margin-bottom: 20px;
 }
-.update-card label{
-    display: block;
-    margin-top: 15px;
-    font-weight: bold;
-    color: #00ffea;
+.update-card label {
+  display: block;
+  margin-top: 15px;
+  font-weight: bold;
+  color: #00ffea;
 }
 .update-card select,
 .update-card textarea,
 .update-card input[type="file"],
-.update-card button{
-    width: 100%;
-    padding: 12px;
-    margin-top: 10px;
-    border-radius: 8px;
-    background: #222;
-    border: 1px solid #00ffea;
-    color: white;
-    box-sizing: border-box;
+.update-card button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border-radius: 8px;
+  background: #222;
+  border: 1px solid #00ffea;
+  color: white;
+  box-sizing: border-box;
 }
-.update-card button{
-    background-color: #00ffea;
-    color: #111;
-    font-weight: bold;
-    border: none;
-    margin-top: 20px;
-    transition: background-color 0.3s ease;
+.update-card button {
+  background-color: #00ffea;
+  color: #111;
+  font-weight: bold;
+  border: none;
+  margin-top: 20px;
+  transition: background-color 0.3s ease;
 }
 
-.update-card button:hover{
-    background-color: #00c3c3;
+.update-card button:hover {
+  background-color: #00c3c3;
 }
 
 .verification-preview,
 .file-preview,
 .checklist-section {
-    background-color: #1f1f1f;
-    padding: 15px;
-    border-radius: 6px;
-    margin-bottom: 20px;
-    border-left: 5px solid #00ffc3;
+  background-color: #1f1f1f;
+  padding: 15px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  border-left: 5px solid #00ffc3;
 }
 
 .btn-link {
-    display: inline-block;
-    margin-top: 15px;
-    padding: 8px 15px;
-    background-color: #00ffc3;
-    color: #000;
-    border-radius: 5px;
-    text-decoration: none;
-    font-weight: bold;
+  display: inline-block;
+  margin-top: 15px;
+  padding: 8px 15px;
+  background-color: #00ffc3;
+  color: #000;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
 }
 
 .btn-link:hover {
-    background-color: #00ffdd;
-    box-shadow: 0 0 10px #00ffc3;
+  background-color: #00ffdd;
+  box-shadow: 0 0 10px #00ffc3;
 }
 .form-card input {
-    width: 100%;
-    padding: 10px;
-    border-radius: 4px;
-    border: 1px solid #00ffc3;
-    background-color: #1c1c1c;
-    color: #fff;
-    margin-top: 5px;
-    margin-bottom: 10px;
+  width: 100%;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #00ffc3;
+  background-color: #1c1c1c;
+  color: #fff;
+  margin-top: 5px;
+  margin-bottom: 10px;
 }
 
 .form-card input:focus {
-    border-color: #00ffdd;
-    outline: none;
-    box-shadow: 0 0 5px #00ffc3;
+  border-color: #00ffdd;
+  outline: none;
+  box-shadow: 0 0 5px #00ffc3;
+}
+.user-home-container {
+    padding: 40px;
+    text-align: center;
+    color: #ffffff;
 }
 
+.features-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px;
+    margin-top: 30px;
+}
+
+.feature-card {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 20px;
+    border-radius: 12px;
+    width: 280px;
+    transition: 0.3s;
+    box-shadow: 0 0 10px #00ffe7;
+}
+.feature-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+.feature-card h3 {
+    margin-top: 15px;
+    color: #00ffe7;
+}
+.feature-card p {
+    font-size: 14px;
+    margin: 10px 0;
+    color: #ccc;
+}
+.user-btn {
+    display: inline-block;
+    padding: 8px 20px;
+    background: #00ffe7;
+    color: #000;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+}
+.nav-profile-dropdown {
+    position: relative;
+    display: inline-block;
+    margin-left: 15px;
+    cursor: pointer;
+}
+
+.nav-profile-icon {
+    font-size: 20px;
+    color: #00ffc3;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    background-color: #1a1a1a;
+    border: 1px solid #00ffc3;
+    border-radius: 6px;
+    top: 30px;
+    right: 0;
+    z-index: 999;
+    list-style: none;
+    padding: 8px 0;
+    min-width: 160px;
+}
+
+.dropdown-menu li {
+    padding: 8px 15px;
+}
+
+.dropdown-menu li a {
+    color: #00ffc3;
+    text-decoration: none;
+    display: block;
+}
+
+.nav-profile-dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+.admin-home-wrapper {
+    text-align: center;
+    padding: 40px;
+    color: #fff;
+}
+
+.admin-heading {
+    font-size: 36px;
+    color: #00ffc3;
+}
+
+.admin-subtext {
+    font-size: 18px;
+    margin-bottom: 30px;
+    color: #ccc;
+}
+
+.admin-feature-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px;
+}
+
+.admin-feature-card {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 25px;
+    border-radius: 10px;
+    width: 300px;
+    box-shadow: 0 0 10px #00ffc3;
+    transition: 0.3s ease;
+}
+.admin-feature-card h3 {
+    color: #00ffc3;
+    margin-bottom: 10px;
+}
+.admin-btn {
+    background-color: #00ffc3;
+    padding: 10px 20px;
+    border-radius: 5px;
+    color: black;
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-block;
+    margin-top: 10px;
+}
+.disabled-btn {
+    background-color: #555;
+    color: #ccc;
+    cursor: not-allowed;
+}

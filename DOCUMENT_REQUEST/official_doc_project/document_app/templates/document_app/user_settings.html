@@ -1,0 +1,14 @@
+{% extends 'document_app/base.html' %}
+{% block content %}
+<div class="settings-card">
+    <h2>Account Settings</h2>
+    <form method="post">
+        {% csrf_token %}
+        <input type="text" name="first_name" placeholder="First Name" value="{{ request.user.first_name }}">
+        <input type="text" name="last_name" placeholder="Last Name" value="{{ request.user.last_name }}">
+        <input type="email" name="email" placeholder="Email" value="{{ request.user.email }}">
+        <button type="submit">Update Profile</button>
+    </form>
+    <a href="{% url 'change_password' %}" class="settings-link">Change Password</a>
+</div>
+{% endblock %}

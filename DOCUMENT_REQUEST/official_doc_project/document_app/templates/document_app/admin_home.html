@@ -1,0 +1,25 @@
+{% extends 'document_app/base.html' %}
+{% block content %}
+<div class="admin-home-wrapper">
+    <h1 class="admin-heading">Welcome, {{ user.username }} 👨‍💼</h1>
+    <p class="admin-subtext">Manage citizens' requests, verify submitted documents, and maintain system integrity.</p>
+
+    <div class="admin-feature-grid">
+        <div class="admin-feature-card">
+            <h3>📊 Dashboard</h3>
+            <p>Track and approve or reject document requests.</p>
+            <a href="{% url 'admin_panel' %}" class="admin-btn">Go to Dashboard</a>
+        </div>
+        <div class="admin-feature-card">
+            <h3>🔐 Change Password</h3>
+            <p>Update your admin account password securely.</p>
+            <a href="{% url 'change_password' %}" class="admin-btn">Change Password</a>
+        </div>
+        <div class="admin-feature-card">
+            <h3>🚧 Manage Users</h3>
+            <p>Coming soon: User reports and access control.</p>
+            <button class="admin-btn disabled-btn" disabled>Coming Soon</button>
+        </div>
+    </div>
+</div>
+{% endblock %}

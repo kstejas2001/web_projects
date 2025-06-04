@@ -19,10 +19,24 @@
             </div>
             <ul class="nav-links">
                 {% if user.is_authenticated %}
-                <li><a href="{% url 'home' %}">Home</a></li>
-                <li><a href="{% url 'request_document' %}">Apply</a></li>
-                <li><a href="{% url 'track_status' %}">Track Status</a></li>
-                <li><a href="{% url 'logout' %}">Logout</a></li>
+                    {% if request.user.userprofile.role == 'admin' %}
+                        <li><a href="{% url 'admin_home' %}">Home</a></li>
+                        <li><a href="{% url 'admin_panel' %}">Dashboard</a></li>
+                        <li><a href="{% url 'logout' %}">Logout</a></li>
+                    {% else %}
+                        <li><a href="{% url 'home' %}">Home</a></li>
+                        <li><a href="{% url 'request_document' %}">Apply</a></li>
+                        <li><a href="{% url 'track_status' %}">Track Status</a></li>
+                         {% if request.user.is_authenticated and request.user.userprofile.role == 'user' %}
+                            <div class="nav-profile-dropdown">
+                                <span class="nav-profile-icon">👤</span>
+                                <ul class="dropdown-menu">
+                                    <li><a href="{% url 'user_settings' %}">⚙️ Profile Settings</a></li>
+                                    <li><a href="{% url 'logout' %}">🚪 Logout</a></li>
+                                </ul>
+                            </div>
+                        {% endif %}
+                    {% endif %}
                 {% else %}
                 <li><a href="{% url 'home' %}">Home</a></li>
                 <li><a href="{% url 'login' %}">Login</a></li>

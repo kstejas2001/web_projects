@@ -4,8 +4,27 @@ from .models import UserProfile
 from django.contrib.auth.decorators import login_required
 import datetime
 
+from django.contrib.auth.decorators import login_required
+from .models import UserProfile
+
 def home(request):
-    return render(request, 'document_app/home.html')
+    if request.user.is_authenticated:
+        try:
+            profile = UserProfile.objects.get(user=request.user)
+            if profile.role == 'admin':
+                return redirect(request, 'document_app/admin_home.html')  # Admin home page
+            else:
+                return render(request, 'document_app/user_home.html')  # User homepage
+        except UserProfile.DoesNotExist:
+            return render(request, 'document_app/home.html')  # fallback guest view
+    return render(request, 'document_app/home.html')  # Guest homepage
+
+@login_required
+def admin_home(request):
+    profile = UserProfile.objects.get(user=request.user)
+    if profile.role != 'admin':
+        return redirect(request, 'document_app/home.html')
+    return render(request, 'document_app/admin_home.html')
 
 def register(request):
     if request.method == 'POST':
@@ -27,6 +46,21 @@ def register(request):
         return redirect('home')  # Redirect to home after registration
     return render(request, 'document_app/register.html')
 
+from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+
+@login_required
+def user_settings(request):
+    if request.method == 'POST':
+        request.user.first_name = request.POST.get('first_name')
+        request.user.last_name = request.POST.get('last_name')
+        request.user.email = request.POST.get('email')
+        request.user.save()
+        messages.success(request, 'Profile updated successfully.')
+    
+    return render(request, 'document_app/user_settings.html')
+
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 
@@ -44,7 +78,7 @@ def login_view(request):
             # Get or create UserProfile
             profile, created = UserProfile.objects.get_or_create(user=user)
             if profile.role == 'admin':
-                return redirect('admin_panel')  # Redirect to admin panel if user is admin
+                return redirect('admin_home')  # Redirect to admin home if user is admin
             else:
                 return redirect('home')  # Regular user home
         else:

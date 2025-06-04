@@ -1,0 +1,32 @@
+{% extends "document_app/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="user-home-container">
+    <h1>Welcome to Your Document Portal</h1>
+    <p>Here you can apply for important government documents, track their status, and download approved files with ease.</p>
+
+    <div class="features-grid">
+        <div class="feature-card">
+            <img src="{% static 'images/id_card_apply.jpg' %}" alt="Apply Document">
+            <h3>Apply for Document</h3>
+            <p>Quickly apply for Aadhaar, PAN, Ration Card, Birth Certificates, and more.</p>
+            <a href="{% url 'request_document' %}" class="user-btn">Apply Now</a>
+        </div>
+
+        <div class="feature-card">
+            <img src="{% static 'images/track_status.jpg' %}" alt="Track Status">
+            <h3>Track Request Status</h3>
+            <p>Track the real-time progress of your document requests and download final PDFs.</p>
+            <a href="{% url 'track_status' %}" class="user-btn">Track Status</a>
+        </div>
+
+        <div class="feature-card">
+            <img src="{% static 'images/help_support.jpg' %}" alt="Support">
+            <h3>Need Help?</h3>
+            <p>View documentation, FAQs, and support for frequently asked questions.</p>
+            <a href="#" class="user-btn">Help & FAQs</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
