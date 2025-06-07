@@ -10,6 +10,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet"></head>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
+    <!-- AOS (Animate On Scroll) CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        AOS.init();
+    });
+    </script>
 <body>
     <!--Navbar Start-->
     <nav class="navbar">
@@ -22,6 +30,7 @@
                     {% if request.user.userprofile.role == 'admin' %}
                         <li><a href="{% url 'admin_home' %}">Home</a></li>
                         <li><a href="{% url 'admin_panel' %}">Dashboard</a></li>
+                        <li><a href="{% url 'admin_download_logs' %}">Download Logs</a></li>
                         <li><a href="{% url 'logout' %}">Logout</a></li>
                     {% else %}
                         <li><a href="{% url 'home' %}">Home</a></li>
@@ -45,16 +54,27 @@
             </ul>
         </div>
     </nav>
-    <!--Navbar End-->
     {% block content %}{% endblock %}
     <script>
-    window.addEventListener('scroll', function()
-    {
-        const navbar = document.querySelector('.navbar');
-        if (window.scrollY > 50) {
-            navbar.style.backgroundColor = 'transparent';
+    let lastScrollTop = 0;
+    const navbar = document.querySelector('.navbar');
+
+    window.addEventListener('scroll', function () {
+        const currentScroll = window.scrollY;
+
+        if (currentScroll > lastScrollTop && currentScroll > 100) {
+            // Scroll down
+            navbar.style.transform = "translateY(-100%)";
         } else {
-            navbar.style.backgroundColor = '#111111';
+            // Scroll up
+            navbar.style.transform = "translateY(0)";
+        }
+
+        lastScrollTop = currentScroll <= 0 ? 0 : currentScroll; // For Mobile
+        if (currentScroll > 50) {
+            navbar.style.backgroundColor = "#111111a0";  // semi-transparent dark
+        } else {
+             navbar.style.backgroundColor = "transparent";
         }
     });
     </script>

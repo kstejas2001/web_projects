@@ -36,7 +36,7 @@
                 <td>{{ req.submitted_at }}</td>
                 <td>
                     {% if req.status == "Approved" and req.final_document %}
-                        <a href="{{ req.final_document.url }}" class="download-btn" download>Download</a>
+                        <a href="{% url 'download_document' req.id %}" class="download-btn">Download</a>
                     {% else %}
                         Not Available
                     {% endif %}

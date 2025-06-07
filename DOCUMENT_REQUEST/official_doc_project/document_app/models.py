@@ -67,3 +67,11 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.role}"
+
+class DownloadLog(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    document_request = models.ForeignKey(DocumentRequest, on_delete=models.CASCADE)
+    downloaded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} downloaded {self.document_request.document_type} on {self.downloaded_at}"

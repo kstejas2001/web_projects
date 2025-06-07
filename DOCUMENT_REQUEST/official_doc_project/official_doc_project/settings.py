@@ -137,3 +137,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Expire session when the browser is closed
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'kstejas2001@gmail.com'     #  Use your Gmail
+EMAIL_HOST_PASSWORD = 'wpdqteaxrdsxutwb'      #  Use App Password (not Gmail login)
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

@@ -155,6 +155,18 @@ def request_document(request):
 
 
         doc_request.save()  # Save the updated fields
+
+        from django.core.mail import send_mail
+        from django.conf import settings
+
+        send_mail(
+            subject='Document Request Submitted',
+            message=f"Hi {request.user.username}, your request for {document_type} has been received. We'll notify you once it's processed.",
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[request.user.email],
+            fail_silently=True
+        )
+
         return redirect('home') # Redirect to home after request submission
     return render(request, 'document_app/request_form.html')
 
@@ -219,6 +231,21 @@ def update_request(request, request_id):
             }           
             generate_certificate(user_data, doc_request.document_type, doc_request)
             doc_request.save()
+            # Notify user via email
+            from django.core.mail import send_mail
+            from django.conf import settings
+            send_mail(
+                subject=f"{doc_request.document_type} Status: {status}",
+                message=(
+                    f"Hi {doc_request.user.username},\n\n"
+                    f"Your request for {doc_request.document_type} has been {status.upper()}.\n"
+                    f"{'You can now download your document from your account.' if status == 'Approved' else ''}\n\n"
+                    f"Remarks: {remarks or 'None'}"
+                ),
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[doc_request.user.email],
+                fail_silently=True
+            )
             return redirect('admin_panel')
         elif status == 'Rejected':
             if not remarks.strip():
@@ -226,6 +253,21 @@ def update_request(request, request_id):
                 return render(request, 'document_app/update_request.html', {'doc_request': doc_request})
             doc_request.final_document = None
             doc_request.save()
+            # Notify user via email
+            from django.core.mail import send_mail
+            from django.conf import settings
+            send_mail(
+                subject=f"{doc_request.document_type} Status: {status}",
+                message=(
+                    f"Hi {doc_request.user.username},\n\n"
+                    f"Your request for {doc_request.document_type} has been {status.upper()}.\n"
+                    f"{'You can now download your document from your account.' if status == 'Approved' else ''}\n\n"
+                    f"Remarks: {remarks or 'None'}"
+                ),
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[doc_request.user.email],
+                fail_silently=True
+            )
             return redirect('admin_panel')
         
     return render(request, 'document_app/update_request.html', {'doc_request': doc_request})
@@ -236,3 +278,36 @@ from django.contrib.auth.decorators import login_required
 def track_status(request):
     requests = DocumentRequest.objects.filter(user=request.user)
     return render(request, 'document_app/track_status.html', {'requests': requests})
+
+from django.http import FileResponse, Http404
+from .models import DownloadLog
+import os
+
+@login_required
+def download_document(request, request_id):
+    try:
+        doc_request = DocumentRequest.objects.get(id=request_id, user=request.user)
+
+        # Log the download
+        DownloadLog.objects.create(user=request.user, document_request=doc_request)
+
+        # Serve the file
+        file_path = doc_request.final_document.path
+        if os.path.exists(file_path):
+            return FileResponse(open(file_path, 'rb'), as_attachment=True, filename=os.path.basename(file_path))
+        else:
+            raise Http404("Document not found.")
+
+    except DocumentRequest.DoesNotExist:
+        raise Http404("No access to this document.")
+
+from .models import DownloadLog
+
+@login_required
+def view_download_logs(request):
+    profile = UserProfile.objects.get(user=request.user)
+    if profile.role != 'admin':
+        return redirect('home')
+
+    logs = DownloadLog.objects.select_related('user', 'document_request').order_by('-downloaded_at')
+    return render(request, 'document_app/admin_download_logs.html', {'logs': logs})
