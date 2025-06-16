@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<h2 class="mb-4 animate__animated animate__fadeInDown">📊 Admin Dashboard</h2>
+
+<!-- Dashboard Cards -->
+<div class="row g-4">
+    <div class="col-md-3">
+        <div class="card shadow border-start border-primary border-4 animate__animated animate__zoomIn">
+            <div class="card-body text-center">
+                <h5 class="card-title"><i class="fas fa-users text-primary"></i> Clients</h5>
+                <h3 class="text-primary">{{ total_clients }}</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card shadow border-start border-success border-4 animate__animated animate__zoomIn">
+            <div class="card-body text-center">
+                <h5 class="card-title"><i class="fas fa-box text-success"></i> Items</h5>
+                <h3 class="text-success">{{ total_items }}</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card shadow border-start border-warning border-4 animate__animated animate__zoomIn">
+            <div class="card-body text-center">
+                <h5 class="card-title"><i class="fas fa-file-invoice text-warning"></i> Invoices</h5>
+                <h3 class="text-warning">{{ total_invoices }}</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card shadow border-start border-danger border-4 animate__animated animate__zoomIn">
+            <div class="card-body text-center">
+                <h5 class="card-title"><i class="fas fa-rupee-sign text-danger"></i> Revenue</h5>
+                <h3 class="text-danger">₹ {{ total_revenue }}</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Chart Section -->
+<div class="row mt-5 animate__animated animate__fadeInUp">
+  <div class="col-md-6">
+    <div class="card shadow-sm">
+      <div class="card-header bg-primary text-white">
+        <i class="fas fa-chart-bar me-1"></i> Invoices per Month
+      </div>
+      <div class="card-body">
+        <canvas id="invoiceChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="card shadow-sm">
+      <div class="card-header bg-success text-white">
+        <i class="fas fa-chart-line me-1"></i> Revenue per Month
+      </div>
+      <div class="card-body">
+        <canvas id="revenueChart"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<script id="month-labels-data" type="application/json">{{ month_labels|safe }}</script>
+<script id="invoice-counts-data" type="application/json">{{ invoice_counts|safe }}</script>
+<script id="revenue-totals-data" type="application/json">{{ revenue_totals|safe }}</script>
+
+<script>
+const monthLabels = JSON.parse(document.getElementById('month-labels-data').textContent);
+const invoiceCounts = JSON.parse(document.getElementById('invoice-counts-data').textContent);
+const revenueTotals = JSON.parse(document.getElementById('revenue-totals-data').textContent);
+
+// Invoices Chart
+new Chart(document.getElementById('invoiceChart'), {
+  type: 'bar',
+  data: {
+    labels: monthLabels,
+    datasets: [{
+      label: 'Invoices',
+      data: invoiceCounts,
+      backgroundColor: '#0d6efd'
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      title: {
+        display: true,
+        text: 'Invoices Created Per Month'
+      }
+    }
+  }
+});
+
+// Revenue Chart
+new Chart(document.getElementById('revenueChart'), {
+  type: 'line',
+  data: {
+    labels: monthLabels,
+    datasets: [{
+      label: 'Revenue (₹)',
+      data: revenueTotals,
+      borderColor: '#198754',
+      backgroundColor: 'rgba(25, 135, 84, 0.2)',
+      tension: 0.3,
+      fill: true
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      title: {
+        display: true,
+        text: 'Revenue Generated Per Month'
+      }
+    }
+  }
+});
+</script>
+
+{% endblock %}

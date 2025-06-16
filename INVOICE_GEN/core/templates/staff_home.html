@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Staff Home{% endblock %}
+
+{% block content %}
+<div class="text-center animate__animated animate__fadeInDown">
+    <h1>👋 Welcome, Staff {{ request.user.username }}!</h1>
+    <p class="lead">This is your staff workspace.</p>
+</div>
+{% endblock %}

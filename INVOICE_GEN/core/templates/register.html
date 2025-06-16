@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}{{ role|title }} Registration{% endblock %}
+
+{% block content %}
+<div class="col-md-6 mx-auto animate__animated animate__fadeInDown">
+    <div class="card shadow">
+        <div class="card-header {% if role == 'admin' %}bg-warning{% else %}bg-success{% endif %} text-dark text-center">
+            <h4 class="mb-0"><i class="fas fa-user-plus me-2"></i>{{ role|title }} Registration</h4>
+        </div>
+        <div class="card-body">
+            {% if error %}
+                <div class="alert alert-danger">{{ error }}</div>
+            {% endif %}
+            <form method="POST">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label">Username</label>
+                    <input type="text" name="username" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Password</label>
+                    <input type="password" name="password" class="form-control" required>
+                </div>
+                <button type="submit" class="btn {% if role == 'admin' %}btn-warning{% else %}btn-success{% endif %} w-100">
+                    <i class="fas fa-user-plus me-1"></i> Register as {{ role|title }}
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

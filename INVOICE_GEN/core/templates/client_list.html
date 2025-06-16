@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Clients - Invoice Generator{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="animate__animated animate__fadeInLeft">Client List</h2>
+    <a href="{% url 'add_client' %}" class="btn btn-primary animate__animated animate__fadeInRight">
+        <i class="fas fa-user-plus me-1"></i> Add New Client
+    </a>
+</div>
+
+<div class="table-responsive animate__animated animate__fadeInUp">
+    <table class="table table-hover table-striped align-middle shadow-sm">
+        <thead class="table-dark">
+            <tr>
+                <th><i class="fas fa-user"></i> Name</th>
+                <th><i class="fas fa-file-invoice"></i> GST Number</th>
+                <th><i class="fas fa-map-marker-alt"></i> State</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for client in clients %}
+            <tr>
+                <td>{{ client.name }}</td>
+                <td>{{ client.gst_number }}</td>
+                <td>{{ client.state }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3" class="text-center text-muted">No clients found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

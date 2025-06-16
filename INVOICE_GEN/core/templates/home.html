@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Welcome - Invoice Generator{% endblock %}
+
+{% block content %}
+<div class="text-center animate__animated animate__fadeInDown">
+  <h1>Welcome to <span class="text-primary">Invoice Generator</span> 🧾</h1>
+  <p class="lead">Please log in or register to access the system.</p>
+  <a href="{% url 'login' %}" class="btn btn-primary">Login</a>
+</div>
+{% endblock %}

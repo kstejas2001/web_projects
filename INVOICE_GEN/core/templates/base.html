@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Invoice Generator{% endblock %}</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+
+  <!-- Animate.css -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- Custom Style -->
+  <style>
+    body {
+      transition: background 0.4s ease;
+    }
+
+    footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: #222;
+      color: #fff;
+      text-align: center;
+      padding: 10px;
+    }
+
+    .theme-toggle {
+      cursor: pointer;
+    }
+
+    .blob {
+      position: fixed;
+      top: -100px;
+      left: -100px;
+      width: 400px;
+      height: 400px;
+      background: linear-gradient(135deg, #ff6ec4, #7873f5);
+      border-radius: 50%;
+      animation: blob 20s infinite ease-in-out;
+      z-index: -1;
+      opacity: 0.5;
+    }
+
+    @keyframes blob {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(200px, 100px) scale(1.3); }
+    }
+  </style>
+</head>
+<body class="bg-light text-dark">
+
+  <!-- Background Blob Animation -->
+  <div class="blob"></div>
+
+  <!-- Navbar -->
+   <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4">
+    <a class="navbar-brand" href="/">🧾 InvoiceGen</a>
+    <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          {% if user.is_authenticated and user_role == 'admin' %}
+            <a class="nav-link" href="{% url 'admin_home' %}">Home</a>
+          {% elif user.is_authenticated and user_role == 'staff' %}
+            <a class="nav-link" href="{% url 'staff_home' %}">Home</a>
+          {% else %}
+            <a class="nav-link" href="{% url 'home' %}">Home</a>
+          {% endif %}
+        </li>
+
+
+        {% if user.is_authenticated and user_role == 'admin' %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'client_list' %}">Clients</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'item_list' %}">Items</a>
+          </li>
+        {% endif %}
+
+        {% if user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'add_invoice' %}">New Invoice</a>
+          </li>
+        {% endif %}
+      </ul>
+
+      {% if user.is_authenticated %}
+        <span class="navbar-text me-3">
+          👤 {{ user.username }} ({{ user_role|title }})
+        </span>
+        <a href="{% url 'logout' %}" class="btn btn-outline-light btn-sm">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+      {% else %}
+        <a href="{% url 'login' %}" class="btn btn-outline-light btn-sm">Login</a>
+      {% endif %}
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container mt-5 animate__animated animate__fadeIn">
+    {% block content %}{% endblock %}
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    © {{ now|date:"Y" }} Invoice Generator | Made with ❤️ by You
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Theme Switcher JS -->
+  <script>
+    const toggle = document.querySelector('.theme-toggle');
+    const html = document.documentElement;
+    const icon = toggle.querySelector('i');
+
+    toggle.addEventListener('click', () => {
+      const theme = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      html.setAttribute('data-theme', theme);
+      document.body.className = theme === 'dark' ? 'bg-dark text-light' : 'bg-light text-dark';
+      icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+    });
+  </script>
+</body>
+</html>
