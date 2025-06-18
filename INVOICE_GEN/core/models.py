@@ -32,6 +32,11 @@ class Invoice(models.Model):
 
     def __str__(self):
         return f"Invoice #{self.invoice_number} - {self.client.name}"
+    
+    @property
+    def total_amount(self):
+        return sum(item.total for item in self.items.all())
+
 
 class InvoiceItem(models.Model):
     invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE, related_name='items')

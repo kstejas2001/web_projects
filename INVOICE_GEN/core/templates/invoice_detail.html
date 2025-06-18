@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}Invoice #{{ invoice.invoice_number }}{% endblock %}
+
+{% block content %}
+<div class="col-lg-10 mx-auto animate__animated animate__fadeIn">
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h3><i class="fas fa-file-invoice me-2"></i> Invoice #{{ invoice.invoice_number }}</h3>
+    {% if invoice.is_paid %}
+      <span class="badge bg-success fs-6">PAID</span>
+    {% else %}
+      <span class="badge bg-danger fs-6">UNPAID</span>
+    {% endif %}
+  </div>
+
+  <!-- Client Info & Date -->
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <h5>Client:</h5>
+      <p class="mb-0"><strong>{{ invoice.client.name }}</strong></p>
+      <p class="mb-0">GST: {{ invoice.client.gst_number }}</p>
+      <p class="mb-0">State: {{ invoice.client.state }}</p>
+    </div>
+    <div class="col-md-6 text-end">
+      <p><strong>Date:</strong> {{ invoice.date }}</p>
+    </div>
+  </div>
+
+  <!-- Items Table -->
+  <div class="table-responsive">
+    <table class="table table-bordered align-middle">
+      <thead class="table-dark">
+        <tr>
+          <th>#</th>
+          <th>Item</th>
+          <th>Description</th>
+          <th>Qty</th>
+          <th>Price</th>
+          <th>GST</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in items %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td>{{ item.item.name }}</td>
+          <td>{{ item.item.description }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>₹ {{ item.price }}</td>
+          <td>₹ {{ item.gst_amount }}</td>
+          <td><strong>₹ {{ item.total }}</strong></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Totals -->
+  <div class="row justify-content-end">
+    <div class="col-md-4">
+      <table class="table table-sm table-bordered">
+        <tr>
+          <th>Subtotal</th>
+          <td>₹ {{ subtotal }}</td>
+        </tr>
+        <tr>
+          <th>Total GST</th>
+          <td>₹ {{ total_gst }}</td>
+        </tr>
+        <tr>
+          <th>Grand Total</th>
+          <td><strong>₹ {{ grand_total }}</strong></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

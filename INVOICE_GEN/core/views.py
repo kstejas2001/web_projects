@@ -216,3 +216,58 @@ from django.contrib.auth import logout
 def user_logout(request):
     logout(request)
     return redirect('login')
+
+from django.db.models import Q
+from datetime import datetime
+
+@login_required
+def invoice_list(request):
+    invoices = Invoice.objects.all().select_related('client')
+
+    # Filtering logic
+    client_id = request.GET.get('client')
+    status = request.GET.get('status')
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
+
+    if client_id and client_id != 'all':
+        invoices = invoices.filter(client__id=client_id)
+
+    if status and status != 'all':
+        is_paid = True if status == 'paid' else False
+        invoices = invoices.filter(is_paid=is_paid)
+
+    if start_date:
+        invoices = invoices.filter(date__gte=start_date)
+    if end_date:
+        invoices = invoices.filter(date__lte=end_date)
+
+    clients = Client.objects.all()
+
+    return render(request, 'invoice_list.html', {
+        'invoices': invoices,
+        'clients': clients,
+        'selected_client': client_id,
+        'selected_status': status,
+        'start_date': start_date,
+        'end_date': end_date,
+    })
+
+from django.shortcuts import get_object_or_404
+
+@login_required
+def invoice_detail(request, invoice_id):
+    invoice = get_object_or_404(Invoice, id=invoice_id)
+    items = invoice.items.all()  # uses related_name='items'
+    
+    subtotal = sum(i.price * i.quantity for i in items)
+    total_gst = sum(i.gst_amount for i in items)
+    grand_total = sum(i.total for i in items)
+
+    return render(request, 'invoice_detail.html', {
+        'invoice': invoice,
+        'items': items,
+        'subtotal': subtotal,
+        'total_gst': total_gst,
+        'grand_total': grand_total,
+    })

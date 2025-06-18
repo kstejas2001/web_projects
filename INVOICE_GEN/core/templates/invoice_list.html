@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}All Invoices{% endblock %}
+
+{% block content %}
+<h2 class="mb-4 animate__animated animate__fadeInDown">📄 Invoice Management</h2>
+
+<!-- Filter Form -->
+<form method="get" class="row g-3 mb-4 animate__animated animate__fadeIn">
+  <div class="col-md-3">
+    <label class="form-label">Client</label>
+    <select name="client" class="form-select">
+      <option value="all">All Clients</option>
+      {% for client in clients %}
+        <option value="{{ client.id }}" {% if selected_client == client.id|stringformat:"s" %}selected{% endif %}>
+          {{ client.name }}
+        </option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="col-md-2">
+    <label class="form-label">Status</label>
+    <select name="status" class="form-select">
+      <option value="all" {% if selected_status == 'all' %}selected{% endif %}>All</option>
+      <option value="paid" {% if selected_status == 'paid' %}selected{% endif %}>Paid</option>
+      <option value="unpaid" {% if selected_status == 'unpaid' %}selected{% endif %}>Unpaid</option>
+    </select>
+  </div>
+  <div class="col-md-2">
+    <label class="form-label">Start Date</label>
+    <input type="date" name="start_date" class="form-control" value="{{ start_date }}">
+  </div>
+  <div class="col-md-2">
+    <label class="form-label">End Date</label>
+    <input type="date" name="end_date" class="form-control" value="{{ end_date }}">
+  </div>
+  <div class="col-md-3 d-grid">
+    <label class="form-label">&nbsp;</label>
+    <button type="submit" class="btn btn-primary"><i class="fas fa-filter me-1"></i> Apply Filters</button>
+  </div>
+</form>
+
+<!-- Invoice Table -->
+<div class="table-responsive animate__animated animate__fadeInUp">
+  <table class="table table-hover align-middle table-bordered">
+    <thead class="table-dark">
+      <tr>
+        <th>#</th>
+        <th>Client</th>
+        <th>Date</th>
+        <th>Invoice No</th>
+        <th>Status</th>
+        <th>Total</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for invoice in invoices %}
+      <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ invoice.client.name }}</td>
+        <td>{{ invoice.date }}</td>
+        <td>{{ invoice.invoice_number }}</td>
+        <td>
+          {% if invoice.is_paid %}
+            <span class="badge bg-success">Paid</span>
+          {% else %}
+            <span class="badge bg-danger">Unpaid</span>
+          {% endif %}
+        </td>
+        <td>₹ {{ invoice.total_amount }}</td>
+        <td>
+          <a href="{% url 'invoice_detail' invoice.id %}" class="btn btn-sm btn-outline-info"><i class="fas fa-eye"></i></a>
+          <a href="#" class="btn btn-sm btn-outline-secondary"><i class="fas fa-download"></i></a>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="7" class="text-center text-muted">No invoices found.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
