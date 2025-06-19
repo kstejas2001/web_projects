@@ -271,3 +271,125 @@ def invoice_detail(request, invoice_id):
         'total_gst': total_gst,
         'grand_total': grand_total,
     })
+
+from django.contrib import messages
+
+@login_required
+def toggle_invoice_status(request, invoice_id):
+    invoice = get_object_or_404(Invoice, id=invoice_id)
+    invoice.is_paid = not invoice.is_paid  # Toggle
+    invoice.save()
+
+    status = "Paid" if invoice.is_paid else "Unpaid"
+    messages.success(request, f"Invoice marked as {status}.")
+    return redirect('invoice_detail', invoice_id=invoice.id)
+
+
+from reportlab.lib.pagesizes import A4
+from reportlab.pdfgen import canvas
+from reportlab.lib.units import mm
+from django.http import HttpResponse
+import io
+
+@login_required
+def download_invoice_pdf(request, invoice_id):
+    invoice = get_object_or_404(Invoice, id=invoice_id)
+    items = invoice.items.all()
+
+    subtotal = sum(i.price * i.quantity for i in items)
+    total_gst = sum(i.gst_amount for i in items)
+    grand_total = sum(i.total for i in items)
+
+    # Create PDF
+    buffer = io.BytesIO()
+    p = canvas.Canvas(buffer, pagesize=A4)
+    width, height = A4
+
+    y = height - 40
+
+    # Header
+    p.setFont("Helvetica-Bold", 14)
+    p.drawCentredString(width / 2, y, "FAMILY SUPERMARKET")
+    y -= 20
+    p.setFont("Helvetica", 10)
+    p.drawCentredString(width / 2, y, "Nagashiva Complex, 7th Road, K R Nagar - 571602")
+    y -= 15
+    p.drawCentredString(width / 2, y, "Ph: 8086582400 | Email: fmlissupermarket@gmail.com")
+    y -= 15
+    p.drawCentredString(width / 2, y, f"GSTIN: 29DHEPK9036G1ZZ | State: Karnataka [29]")
+
+    y -= 30
+    p.setFont("Helvetica-Bold", 12)
+    p.drawString(40, y, f"Invoice No: {invoice.invoice_number}")
+    p.drawRightString(width - 40, y, f"Date: {invoice.date}")
+    y -= 20
+
+    # Client
+    p.setFont("Helvetica", 10)
+    p.drawString(40, y, f"Customer: {invoice.client.name if invoice.client else 'Cash A/c'}")
+    y -= 20
+
+    # Table headers
+    p.setFont("Helvetica-Bold", 10)
+    p.drawString(40, y, "Sl")
+    p.drawString(60, y, "Item Name")
+    p.drawString(200, y, "Qty")
+    p.drawString(240, y, "Rate")
+    p.drawString(290, y, "Amount")
+    y -= 10
+    p.line(40, y, width - 40, y)
+    y -= 10
+
+    p.setFont("Helvetica", 10)
+    for idx, i in enumerate(items, start=1):
+        p.drawString(40, y, str(idx))
+        p.drawString(60, y, i.item.name)
+        p.drawString(200, y, f"{i.quantity:.2f}")
+        p.drawString(240, y, f"{i.price:.2f}")
+        p.drawString(290, y, f"{i.total:.2f}")
+        y -= 15
+
+    y -= 10
+    p.setFont("Helvetica-Bold", 10)
+    p.drawRightString(width - 40, y, f"NET PAYABLE: Rs. {grand_total:.2f}")
+
+    y -= 40
+
+    # Tax Summary
+    p.setFont("Helvetica-Bold", 10)
+    p.drawString(40, y, "Tax Details:")
+    y -= 15
+    p.setFont("Helvetica", 10)
+    p.drawString(40, y, "TAXABLE AMT")
+    p.drawString(130, y, "CGST%")
+    p.drawString(180, y, "CGST AMT")
+    p.drawString(240, y, "SGST%")
+    p.drawString(290, y, "SGST AMT")
+    y -= 15
+
+    p.drawString(40, y, f"{(subtotal):.2f}")
+    p.drawString(130, y, "2.5")
+    p.drawString(180, y, f"{(total_gst / 2):.2f}")
+    p.drawString(240, y, "2.5")
+    p.drawString(290, y, f"{(total_gst / 2):.2f}")
+
+    y -= 30
+    p.setFont("Helvetica-Bold", 10)
+    p.drawString(40, y, "Payment Details:")
+    y -= 15
+    p.setFont("Helvetica", 10)
+    p.drawString(40, y, f"Net Payable: Rs. {grand_total:.2f}")
+    p.drawString(200, y, "Cash")
+
+    y -= 30
+    p.setFont("Helvetica-Bold", 11)
+    # p.drawCentredString(width / 2, y, "You saved Rs. 21.00")
+    y -= 20
+    p.setFont("Helvetica", 10)
+    p.drawCentredString(width / 2, y, "Thank you, Visit Again!")
+
+    p.showPage()
+    p.save()
+
+    buffer.seek(0)
+    return HttpResponse(buffer, content_type='application/pdf')

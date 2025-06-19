@@ -12,7 +12,7 @@ urlpatterns = [
     path('invoices/<int:invoice_id>/items', add_invoice_items, name='add_invoice_items'),
     path('login/', user_login, name='login'),
 ]
-from .views import register_user, admin_home, staff_home, user_logout, invoice_list, invoice_detail
+from .views import register_user, admin_home, staff_home, user_logout, invoice_list, invoice_detail, download_invoice_pdf, toggle_invoice_status
 
 urlpatterns += [
     path('register/<str:role>/', register_user, name='register'),
@@ -21,4 +21,6 @@ urlpatterns += [
     path('logout/', user_logout, name='logout'),
     path('invoices/', invoice_list, name='invoice_list'),
     path('invoices/<int:invoice_id>/', invoice_detail, name='invoice_detail'),
+    path('invoices/<int:invoice_id>/pdf/', download_invoice_pdf, name='download_invoice_pdf'),
+    path('invoices/<int:invoice_id>/toggle-status/', toggle_invoice_status, name='toggle_invoice_status'),
 ]

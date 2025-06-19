@@ -2,7 +2,12 @@
 {% block title %}Invoice #{{ invoice.invoice_number }}{% endblock %}
 
 {% block content %}
-<div class="col-lg-10 mx-auto animate__animated animate__fadeIn">
+{% if messages %}
+  {% for message in messages %}
+    <div class="alert alert-success">{{ message }}</div>
+  {% endfor %}
+{% endif %}
+<div class="col-lg-10 mx-auto animate__animated animate__fadeIn mb-5">
 
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h3><i class="fas fa-file-invoice me-2"></i> Invoice #{{ invoice.invoice_number }}</h3>
@@ -74,6 +79,25 @@
         </tr>
       </table>
     </div>
+  </div>
+
+  <!-- Actions -->
+  <div class="text-end mt-3">
+    <a href="{% url 'toggle_invoice_status' invoice.id %}"
+      class="btn {% if invoice.is_paid %}btn-outline-danger{% else %}btn-outline-success{% endif %}">
+      {% if invoice.is_paid %}
+        <i class="fas fa-times-circle me-1"></i> Mark as Unpaid
+      {% else %}
+        <i class="fas fa-check-circle me-1"></i> Mark as Paid
+      {% endif %}
+    </a>
+  </div>
+
+  <!-- Download PDF -->
+  <div class="text-end mt-4">
+    <a href="{% url 'download_invoice_pdf' invoice.id %}" class="btn btn-outline-secondary">
+      <i class="fas fa-download me-1"></i> Download PDF
+    </a>
   </div>
 
 </div>
