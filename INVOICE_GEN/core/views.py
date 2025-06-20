@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .models import Client, Item
 from .forms import ClientForm
 from django.shortcuts import redirect
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 from django.shortcuts import redirect
@@ -32,6 +33,33 @@ def add_client(request):
         form = ClientForm()
     return render(request, 'add_client.html', {'form': form})
 
+@login_required
+def edit_client(request, client_id):
+    client = get_object_or_404(Client, id=client_id)
+
+    if request.method == 'POST':
+        form = ClientForm(request.POST, instance=client)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Client updated successfully.")
+            return redirect('client_list')
+    else:
+        form = ClientForm(instance=client)
+
+    return render(request, 'edit_client.html', {'form': form, 'client': client})
+
+@login_required
+def delete_client(request, client_id):
+    client = get_object_or_404(Client, id=client_id)
+
+    if request.method == 'POST':
+        client.delete()
+        messages.success(request, "Client deleted successfully.")
+        return redirect('client_list')
+
+    return render(request, 'delete_client.html', {'client': client})
+
+
 def item_list(request):
     items = Item.objects.all()
     return render(request, 'item_list.html', {'items': items})
@@ -47,6 +75,33 @@ def add_item(request):
     else:
         form = ItemForm()
     return render(request, 'add_item.html', {'form': form})
+
+@login_required
+def edit_item(request, item_id):
+    item = get_object_or_404(Item, id=item_id)
+
+    if request.method == 'POST':
+        form = ItemForm(request.POST, instance=item)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Item updated successfully.")
+            return redirect('item_list')
+    else:
+        form = ItemForm(instance=item)
+
+    return render(request, 'edit_item.html', {'form': form, 'item': item})
+
+@login_required
+def delete_item(request, item_id):
+    item = get_object_or_404(Item, id=item_id)
+
+    if request.method == 'POST':
+        item.delete()
+        messages.success(request, "Item deleted successfully.")
+        return redirect('item_list')
+
+    return render(request, 'delete_item.html', {'item': item})
+
 
 from django.urls import reverse
 from .forms import InvoiceForm
@@ -119,7 +174,6 @@ def add_invoice_items(request, invoice_id):
         })
     
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .models import UserProfile
 
@@ -271,6 +325,73 @@ def invoice_detail(request, invoice_id):
         'total_gst': total_gst,
         'grand_total': grand_total,
     })
+
+@login_required
+def client_invoices(request, client_id):
+    client = get_object_or_404(Client, id=client_id)
+    invoices = Invoice.objects.filter(client=client)
+
+    return render(request, 'client_invoices.html', {
+        'client': client,
+        'invoices': invoices,
+    })
+
+@login_required
+def client_report_pdf(request, client_id):
+    client = get_object_or_404(Client, id=client_id)
+    invoices = Invoice.objects.filter(client=client)
+
+    # You can summarize totals here if needed
+    total_invoices = invoices.count()
+    total_amount = sum(i.total_amount for i in invoices)
+
+    # PDF setup
+    buffer = io.BytesIO()
+    p = canvas.Canvas(buffer, pagesize=A4)
+    width, height = A4
+    y = height - 40
+
+    p.setFont("Helvetica-Bold", 14)
+    p.drawString(40, y, f"Client Report: {client.name}")
+    y -= 20
+
+    p.setFont("Helvetica", 10)
+    p.drawString(40, y, f"GST Number: {client.gst_number}")
+    y -= 15
+    p.drawString(40, y, f"State: {client.state}")
+    y -= 30
+
+    p.setFont("Helvetica-Bold", 11)
+    p.drawString(40, y, f"Total Invoices: {total_invoices}")
+    p.drawString(240, y, f"Total Amount: Rs. {total_amount:.2f}")
+    y -= 30
+
+    # Table Headers
+    p.setFont("Helvetica-Bold", 10)
+    p.drawString(40, y, "Invoice No")
+    p.drawString(150, y, "Date")
+    p.drawString(240, y, "Status")
+    p.drawString(320, y, "Amount")
+    y -= 10
+    p.line(40, y, width - 40, y)
+    y -= 15
+
+    p.setFont("Helvetica", 10)
+    for i in invoices:
+        if y < 100:  # New page if needed
+            p.showPage()
+            y = height - 40
+        p.drawString(40, y, i.invoice_number)
+        p.drawString(150, y, str(i.date))
+        p.drawString(240, y, "Paid" if i.is_paid else "Unpaid")
+        p.drawString(320, y, f"{i.total_amount:.2f}")
+        y -= 15
+
+    p.showPage()
+    p.save()
+    buffer.seek(0)
+    return HttpResponse(buffer, content_type='application/pdf')
+
 
 from django.contrib import messages
 

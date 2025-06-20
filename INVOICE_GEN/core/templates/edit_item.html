@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Edit Item - {{ item.name }}{% endblock %}
+
+{% block content %}
+<div class="col-md-8 mx-auto animate__animated animate__fadeInDown">
+  <div class="card shadow mb-5">
+    <div class="card-header bg-warning text-dark">
+      <h4><i class="fas fa-edit me-2"></i>Edit Item</h4>
+    </div>
+    <div class="card-body">
+      <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-warning w-100">
+          <i class="fas fa-save me-1"></i> Save Changes
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

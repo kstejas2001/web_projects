@@ -16,6 +16,7 @@
                 <th><i class="fas fa-user"></i> Name</th>
                 <th><i class="fas fa-file-invoice"></i> GST Number</th>
                 <th><i class="fas fa-map-marker-alt"></i> State</th>
+                <th><i class="fas fa-cogs"></i> Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -24,6 +25,12 @@
                 <td>{{ client.name }}</td>
                 <td>{{ client.gst_number }}</td>
                 <td>{{ client.state }}</td>
+                <td>
+                    <a href="{% url 'edit_client' client.id %}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
+                    <a href="{% url 'delete_client' client.id %}" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
+                    <a href="{% url 'client_invoices' client.id %}" class="btn btn-sm btn-info"><i class="fas fa-list me-1"></i> Invoices</a>
+                    <a href="{% url 'client_report_pdf' client.id %}" class="btn btn-sm btn-secondary"><i class="fas fa-download me-1"></i> PDF Report</a>
+                </td>
             </tr>
             {% empty %}
             <tr>

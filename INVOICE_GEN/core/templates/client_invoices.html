@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Invoices - {{ client.name }}{% endblock %}
+
+{% block content %}
+<div class="mb-4 animate__animated animate__fadeInDown">
+    <h2><i class="fas fa-user"></i> {{ client.name }} <small class="text-muted">({{ client.gst_number }})</small></h2>
+    <p><i class="fas fa-map-marker-alt"></i> {{ client.state }}</p>
+    <a href="{% url 'client_report_pdf' client.id %}" class="btn btn-sm btn-secondary">
+        <i class="fas fa-download me-1"></i> Download PDF Report
+    </a>
+</div>
+
+<div class="table-responsive animate__animated animate__fadeInUp">
+    <table class="table table-bordered table-striped align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>#</th>
+                <th>Invoice No</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Total</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for invoice in invoices %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ invoice.invoice_number }}</td>
+                <td>{{ invoice.date }}</td>
+                <td>
+                    {% if invoice.is_paid %}
+                        <span class="badge bg-success">Paid</span>
+                    {% else %}
+                        <span class="badge bg-danger">Unpaid</span>
+                    {% endif %}
+                </td>
+                <td>Rs. {{ invoice.total_amount }}</td>
+                <td>
+                    <a href="{% url 'invoice_detail' invoice.id %}" class="btn btn-sm btn-info">
+                        <i class="fas fa-eye"></i> View
+                    </a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="text-center text-muted">No invoices found for this client.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

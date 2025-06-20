@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Delete Item - {{ item.name }}{% endblock %}
+
+{% block content %}
+<div class="col-md-6 mx-auto animate__animated animate__fadeIn">
+  <div class="card border-danger shadow">
+    <div class="card-header bg-danger text-white">
+      <h4 class="mb-0"><i class="fas fa-trash-alt me-1"></i> Confirm Delete</h4>
+    </div>
+    <div class="card-body text-center">
+      <p class="fs-5">Are you sure you want to delete <strong>{{ item.name }}</strong>?</p>
+      <form method="POST">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger me-2">
+          <i class="fas fa-trash-alt"></i> Delete
+        </button>
+        <a href="{% url 'item_list' %}" class="btn btn-secondary">Cancel</a>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
