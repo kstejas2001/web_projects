@@ -28,12 +28,27 @@ def login_view(request):
                 # Store user info in session
                 request.session['user_id'] = user.id
                 request.session['role'] = user.role
-                return redirect('dashboard')
+
+
+                # Role-based redirect
+                if user.role == 'admin':
+                    return redirect('admin_home')
+                elif user.role == 'student':
+                    return redirect('student_welcome')
+                else:
+                    return redirect('home')
             except User.DoesNotExist:
                 form.add_error(None, "Invalid credentials")
     else:
         form = UserLoginForm()
     return render(request, 'quiz_app/login.html', {'form': form})
+
+def student_home(request):
+    return render(request, 'quiz_app/student_welcome.html')
+
+def admin_home(request):
+    return render(request, 'quiz_app/admin_home.html')
+
 
 def logout_view(request):
     request.session.flush()  # Clears all session data
@@ -44,7 +59,7 @@ from django.shortcuts import render, redirect
 from .models import User, Quiz
 quizzes = Quiz.objects.all()
 
-def dashboard(request):
+def student_dashboard(request):
     user_id = request.session.get('user_id')
     user = User.objects.get(id=user_id)
     if not user_id:
@@ -127,11 +142,13 @@ def student_quiz_list(request):
     if user.role != 'student':
         return redirect('dashboard')
 
-    quizzes = Quiz.objects.filter(is_active=True)
+    all_quizzes = Quiz.objects.filter(is_active=True)
+    attempted_quiz_ids = StudentResult.objects.filter(student=user).values_list('quiz_id', flat=True)
 
     return render(request, 'quiz_app/student_quiz_list.html', {
-        'quizzes': quizzes,
+        'quizzes': all_quizzes,
         'user': user,
+        'attempted_ids': list(attempted_quiz_ids)
     })
 
 from .models import StudentResult
@@ -171,7 +188,10 @@ def attempt_quiz(request, quiz_id):
             score=score,
             total=total
         )
-        if StudentResult.objects.filter(student=user, quiz=quiz).exists():
+        existing_result = StudentResult.objects.filter(student=user, quiz=quiz).first()
+
+        # Check if the user has already attempted this quiz
+        if existing_result:
             return render(request, 'quiz_app/already_attempted.html', {'quiz': quiz})
 
         return render(request, 'quiz_app/quiz_result.html', {

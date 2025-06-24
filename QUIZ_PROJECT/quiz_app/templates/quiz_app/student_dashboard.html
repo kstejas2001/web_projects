@@ -1,26 +1,37 @@
 {% extends "quiz_app/base.html" %}
-{% block title %}Student Dashboard{% endblock %}
 {% load static %}
+{% block title %}Student Dashboard{% endblock %}
 
 {% block content %}
-<h2 class="text-center mb-4">Welcome {{ user.username }}</h2>
+<section class="py-5">
+    <div class="container">
+        <h2 class="mb-4 text-center fw-bold">🎓 Student Dashboard</h2>
 
-<div class="row justify-content-center">
-    <div class="col-md-4">
-        <div class="card shadow-lg border-0">
-            <div class="card-body text-center">
-                <h5 class="card-title">Take Quiz</h5>
-                <a href="{% url 'student_quiz_list' %}" class="btn btn-primary">Start</a>
+        <div class="row justify-content-center g-4">
+            <div class="col-md-5">
+                <div class="card shadow border-0 rounded-4 h-100">
+                    <div class="card-body text-center py-4">
+                        <h5 class="card-title">📝 Take Quiz</h5>
+                        <p class="text-muted">Browse and attempt available quizzes.</p>
+                        <a href="{% url 'student_quiz_list' %}" class="btn btn-primary mt-2">Start Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-5">
+                <div class="card shadow border-0 rounded-4 h-100">
+                    <div class="card-body text-center py-4">
+                        <h5 class="card-title">📊 View Results</h5>
+                        <p class="text-muted">Check your quiz performance and track progress.</p>
+                        <a href="{% url 'student_results' %}" class="btn btn-success mt-2">See Results</a>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="col-md-4 mt-4 mt-md-0">
-        <div class="card shadow-lg border-0">
-            <div class="card-body text-center">
-                <h5 class="card-title">View My Results</h5>
-                <a href="{% url 'student_results' %}" class="btn btn-success">Check</a>
-            </div>
+
+        <div class="text-center mt-5">
+            <a href="{% url 'student_quiz_list' %}" class="btn btn-outline-dark">🏆 View Quiz Leaderboards</a>
         </div>
     </div>
-</div>
+</section>
 {% endblock %}

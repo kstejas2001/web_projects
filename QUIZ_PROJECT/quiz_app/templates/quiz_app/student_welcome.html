@@ -1,0 +1,18 @@
+{% extends "quiz_app/base.html" %}
+{% block title %}Welcome{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container text-center">
+        <h1 class="fw-bold mb-3">👋 Welcome {{ user.username }}</h1>
+        <p class="lead text-muted">
+            You’ve successfully logged in. Use the dashboard to take quizzes, track your results, and grow your knowledge.
+        </p>
+        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Student" width="150" class="mb-4 mt-3">
+
+        <div>
+            <a href="{% url 'student_dashboard' %}" class="btn btn-primary btn-lg">Go to Dashboard</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

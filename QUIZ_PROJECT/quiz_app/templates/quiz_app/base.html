@@ -11,32 +11,67 @@
 
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm">
-    <div class="container">
-        <a class="navbar-brand fw-bold text-primary" href="{% url 'dashboard' %}">QuizMaster</a>
-        <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navMenu">
-            <ul class="navbar-nav ms-auto">
-                {% if request.session.user_id %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-danger" href="{% url 'logout' %}">Logout</a>
-                    </li>
-                {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'login' %}">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'register' %}">Register</a>
-                    </li>
-                {% endif %}
-            </ul>
-        </div>
+  <div class="container">
+    <a class="navbar-brand fw-bold text-primary"
+   href="{% if request.session.role == 'student' %}
+            {% url 'student_welcome' %}
+         {% elif request.session.role == 'admin' %}
+            {% url 'admin_home' %}
+         {% else %}
+            {% url 'home' %}
+         {% endif %}">QuizMaster
+    </a>
+
+    <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navMenu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav ms-auto">
+        {% if request.session.user_id %}
+          {% if request.session.role == "student" %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'student_dashboard' %}">Dashboard</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'student_quiz_list' %}">Take Quiz</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'student_results' %}">My Results</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-danger" href="{% url 'logout' %}">Logout</a>
+            </li>
+          {% elif request.session.role == "admin" %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'create_quiz' %}">Create Quiz</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'analytics_dashboard' %}">Analytics</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-danger" href="{% url 'logout' %}">Logout</a>
+            </li>
+          {% endif %}
+        {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'home' %}">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'login' %}">Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'register' %}">Register</a>
+          </li>
+        {% endif %}
+      </ul>
     </div>
+  </div>
 </nav>
+
 
 <!-- Main Page Content -->
 <div class="container mt-4">
